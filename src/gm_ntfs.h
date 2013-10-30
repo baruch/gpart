@@ -29,7 +29,7 @@
 /* 'NTFS' in little endian */
 #define NTFS_SUPER_MAGIC	0x5346544E
 
-#if defined(i386) || defined(__i386__) || defined(__alpha__)
+#if defined(i386) || defined(__i386__) || defined(__alpha__) || defined(__x86_64__)
 
 /* unsigned integral types */
 #ifndef NTFS_INTEGRAL_TYPES
@@ -39,7 +39,7 @@ typedef unsigned short		ntfs_u16;
 typedef unsigned int		ntfs_u32;
 typedef s64_t			ntfs_u64;
 #endif /* NTFS_INTEGRAL_TYPES */
-#endif /* defined(i386) || defined(__i386__) || defined(__alpha__) */
+#endif /* defined(i386) || defined(__i386__) || defined(__alpha__) || defined(__x86_64__) */
 
 
 /* Macros reading unsigned integers from a byte pointer */
