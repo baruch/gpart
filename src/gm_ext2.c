@@ -121,9 +121,10 @@ int ext2_gfun(disk_desc *d,g_module *m)
 
 	/*
 	 * current mount count shouldn't be greater than max+20
+	 * but ext3 usually has s_max_mnt_count==-1
 	 */
 
-	if (sb->s_mnt_count > sb->s_max_mnt_count + 20)
+	if ((sb->s_max_mnt_count!=-1)&&(sb->s_mnt_count > sb->s_max_mnt_count + 20))
 		return (1);
 
 	/*
