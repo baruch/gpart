@@ -1,9 +1,23 @@
 #
 # installation directories for gpart
 #
-prefix=/usr/local
-bindir=$(prefix)/bin
-libdir=$(prefix)/lib
-mandir=$(prefix)/man
+
+# Added by D. Coe for Debian GNU/Linux:
+DESTDIR =
+
+# Changed by D. Coe for Debian GNU/Linux:
+#prefix=/usr/local
+prefix=$(DESTDIR)
+
+# Changed by D. Coe for Debian GNU/Linux:
+# Install into sbin rather than bin
+bindir=$(prefix)/sbin
+
+# Not used -D. Coe:
+#libdir=$(prefix)/lib
+
+mandir=$(prefix)/usr/share/man
 manext=8
-sharedir=$(prefix)/share
+
+# Not used -D. Coe:
+#sharedir=$(prefix)/share
