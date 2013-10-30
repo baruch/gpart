@@ -1,7 +1,7 @@
 /*      
  * gm_ntfs.c -- gpart ntfs guessing module
  *
- * gpart (c) 1999,2000 Michail Brzitwa <mb@ichabod.han.de>
+ * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
  * Guess PC-type hard disk partitions.
  *
  * gpart is free software; you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 #include "gpart.h"
 #include "gm_ntfs.h"
 
-static const char	rcsid[] = "$Id: gm_ntfs.c,v 1.5 2000/02/26 23:15:32 mb Exp mb $";
+static const char	rcsid[] = "$Id: gm_ntfs.c,v 1.6 2001/02/07 18:08:08 mb Exp mb $";
 
 #define NTFS_SECTSIZE	512
 
@@ -30,7 +30,7 @@ int ntfs_init(disk_desc *d,g_module *m)
 	if ((d == 0) || (m == 0))
 		return (0);
 
-	m->m_desc = "Windows NTFS";
+	m->m_desc = "Windows NT/W2K FS";
 	m->m_hasptbl = 1;
 	return (NTFS_SECTSIZE); /* The ntfs driver in Linux just assumes so */
 }

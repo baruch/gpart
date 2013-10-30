@@ -1,7 +1,7 @@
 /*      
  * gm_lswap.c -- gpart linux swap guessing module
  *
- * gpart (c) 1999,2000 Michail Brzitwa <mb@ichabod.han.de>
+ * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
  * Guess PC-type hard disk partitions.
  *
  * gpart is free software; you can redistribute it and/or modify
@@ -19,7 +19,7 @@
 #include "gpart.h"
 
 
-static const char	rcsid[] = "$Id: gm_lswap.c,v 1.7 2000/02/26 23:15:32 mb Exp mb $";
+static const char	rcsid[] = "$Id: gm_lswap.c,v 1.8 2001/02/07 18:08:08 mb Exp mb $";
 static char		*sigs[] = { "SWAP-SPACE", "SWAPSPACE2" };
 static int		pszs[] = { 4096, 8192 };
 static int		siglen = 10;

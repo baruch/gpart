@@ -1,7 +1,7 @@
 /*
  * disku.c -- gpart disk util routines
  *
- * gpart (c) 1999,2000 Michail Brzitwa <mb@ichabod.han.de>
+ * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
  * Guess PC-type hard disk partitions.
  *
  * gpart is free software; you can redistribute it and/or modify
@@ -10,7 +10,8 @@
  * option) any later version.
  *
  * Created:   04.01.1999 <mb@ichabod.han.de>
- * Modified:
+ * Modified:  13.12.2000 <mb@ichabod.han.de>
+ *            Calculation of disk cylinder count changed for Linux.
  *
  */
 
@@ -43,10 +44,17 @@ struct disk_geom *disk_geometry(disk_desc *d)
 
 #if defined(__linux__)
 	struct hd_geometry	hg;
+	long			nsects;
 
 	if (ioctl(d->d_fd,HDIO_GETGEO,&hg) == -1)
 		pr(FATAL,EM_IOCTLFAILED,"HDIO_GETGEO",strerror(errno));
+#ifdef BLKGETSIZE
+	if (ioctl(d->d_fd,BLKGETSIZE,&nsects) == -1)
+		pr(FATAL,EM_IOCTLFAILED,"BLKGETSIZE",strerror(errno));
+	g.d_c = nsects / (hg.heads * hg.sectors);
+#else
 	g.d_c = hg.cylinders;
+#endif
 	g.d_h = hg.heads;
 	g.d_s = hg.sectors;
 

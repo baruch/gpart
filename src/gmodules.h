@@ -1,7 +1,7 @@
 /*
  * gmodules.h -- gpart module header file
  *
- * gpart (c) 1999,2000 Michail Brzitwa <mb@ichabod.han.de>
+ * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
  * Guess PC-type hard disk partitions.
  *
  * gpart is free software; you can redistribute it and/or modify
@@ -10,7 +10,8 @@
  * option) any later version.
  *
  * Created:   04.01.1999 <mb@ichabod.han.de>
- * Modified:
+ * Modified:  29.01.2001 <mb@ichabod.han.de>
+ *            New modules: qnx & beos.
  *
  */
 
@@ -63,7 +64,8 @@ g_module *g_mod_setweight(char *,float);
 GMODDECL(bsddl); GMODDECL(ext2); GMODDECL(fat);
 GMODDECL(hpfs); GMODDECL(lswap); GMODDECL(ntfs);
 GMODDECL(s86dl); GMODDECL(minix); GMODDECL(rfs);
-GMODDECL(hmlvm);
+GMODDECL(hmlvm); GMODDECL(qnx4); GMODDECL(beos);
+GMODDECL(xfs);
 
 
 #endif /* _GMODULES_H */

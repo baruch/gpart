@@ -19,7 +19,7 @@ CFLAGS+=-DGPART_LANG=\'$(GPART_LANG)\'
 endif
 
 
-mod=ext2 lswap fat bsddl ntfs hpfs s86dl minix rfs hmlvm
+mod=ext2 lswap fat bsddl ntfs hpfs s86dl minix rfs hmlvm qnx4 beos xfs
 modobj=$(foreach m,$(mod),gm_$(m).o)
 obj=gpart.o gmodules.o disku.o l64seek.o $(modobj)
 src=$(obj:.o=.c)

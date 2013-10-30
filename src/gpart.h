@@ -1,7 +1,7 @@
 /*
  * gpart.h -- gpart main header file
  *
- * gpart (c) 1999,2000 Michail Brzitwa <mb@ichabod.han.de>
+ * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
  * Guess PC-type hard disk partitions.
  *
  * gpart is free software; you can redistribute it and/or modify
@@ -33,39 +33,39 @@ typedef unsigned char byte_t;
 
 #if defined(__i386__) || defined(__alpha__)
 #	define le16(x)	(x)		/* x as little endian */
-#	define be16(x)	(((x)&0xff00)>>8)			| \
-			(((x)&0x00ff)<<8)
+#	define be16(x)	((((x)&0xff00)>>8)			| \
+			(((x)&0x00ff)<<8))
 #	define le32(x)	(x)
-#	define be32(x)	(((x)&0xff000000L)>>24)			| \
+#	define be32(x)	((((x)&0xff000000L)>>24)		| \
 			(((x)&0x00ff0000L)>>8)			| \
 			(((x)&0x0000ff00L)<<8)			| \
-			(((x)&0x000000ffL)<<24)
+			(((x)&0x000000ffL)<<24))
 #	define le64(x)	(x)
-#	define be64(x)	(((x)&0xff00000000000000LL)>>56)	| \
+#	define be64(x)	((((x)&0xff00000000000000LL)>>56)	| \
 			(((x)&0x00ff000000000000LL)>>40)	| \
 			(((x)&0x0000ff0000000000LL)>>24)	| \
 			(((x)&0x000000ff00000000LL)>>8)		| \
 			(((x)&0x00000000ff000000LL)<<8)		| \
 			(((x)&0x0000000000ff0000LL)<<24)	| \
 			(((x)&0x000000000000ff00LL)<<40)	| \
-			(((x)&0x00000000000000ffLL)<<56)
+			(((x)&0x00000000000000ffLL)<<56))
 #else /* bigendian */
-#	define le16(x)	(((x)&0xff00)>>8)			| \
-			(((x)&0x00ff)<<8)
+#	define le16(x)	((((x)&0xff00)>>8)			| \
+			(((x)&0x00ff)<<8))
 #	define be16(x)	(x)
-#	define le32(x)	(((x)&0xff000000L)>>24)			| \
+#	define le32(x)	((((x)&0xff000000L)>>24)		| \
 			(((x)&0x00ff0000L)>>8)			| \
 			(((x)&0x0000ff00L)<<8)			| \
-			(((x)&0x000000ffL)<<24)
+			(((x)&0x000000ffL)<<24))
 #	define be32(x)	(x)
-#	define le64(x)	(((x)&0xff00000000000000LL)>>56)	| \
+#	define le64(x)	((((x)&0xff00000000000000LL)>>56)	| \
 			(((x)&0x00ff000000000000LL)>>40)	| \
 			(((x)&0x0000ff0000000000LL)>>24)	| \
 			(((x)&0x000000ff00000000LL)>>8)		| \
 			(((x)&0x00000000ff000000LL)<<8)		| \
 			(((x)&0x0000000000ff0000LL)<<24)	| \
 			(((x)&0x000000000000ff00LL)<<40)	| \
-			(((x)&0x00000000000000ffLL)<<56)
+			(((x)&0x00000000000000ffLL)<<56))
 #	define be64(x)	(x)
 #endif
 
@@ -172,7 +172,7 @@ struct disk_geom *disk_geometry(disk_desc *);
 int reread_partition_table(int);
 
 #define s2mb(d,s)	{ (s)*=(d)->d_ssize; (s)/=1024; (s)/=1024; }
-#define align(b,s)	(byte_t *)(((int)(b)+(s)-1)&~((s)-1))
+#define align(b,s)	(byte_t *)(((size_t)(b)+(s)-1)&~((s)-1))
 
 #include "gmodules.h"
 

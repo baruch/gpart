@@ -1,3 +1,14 @@
+v0.1h
+ - New support for the following filesystems: BeOS, QNX 4.x & SGI XFS.
+ - Updated Reiser filesystem support (Francis Devereux <francis@devereux.tc>).
+ - Updated LVM support.
+ - Several small fixes from contributors.
+
+v0.1g
+ - For access via raw devices: made writing of guessed table also aligned
+   (reading has been aligned since 0.1f).
+ - Fixed stupid copy&paste bug in the partition table check routine.
+
 v0.1f
  - Default scan increment 'h' again.
  - Fixed wrong head-boundary condition.

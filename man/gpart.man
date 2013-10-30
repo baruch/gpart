@@ -1,7 +1,7 @@
 .\"
 .\" gpart v%VERSION% man page (c) Jan 1999 Michail Brzitwa
 .\"
-.TH GPART %MANEXT% "February 2000" "Administration Tools"
+.TH GPART %MANEXT% "January 2001" "Administration Tools"
 .SH NAME
 gpart \- guess PC-type hard disk partitions
 .SH SYNOPSIS
@@ -32,6 +32,9 @@ type. Currently the following filesystem types are known to
 (listed by module names) :
 
 .TP
+.I beos
+BeOS filesystem type.
+.TP
 .I bsddl
 FreeBSD/NetBSD/386BSD disklabel sub-partitioning
 scheme used on Intel platforms.
@@ -55,16 +58,20 @@ Linux swap partitions (versions 0 and 1).
 The Minix operating system filesystem type.
 .TP
 .I ntfs
-MS Windows NT filesystem. The recognition of an NTFS
-partition is quite weak because only little is known
-about its internals.
+MS Windows NT/2000 filesystem.
+.TP
+.I qnx4
+QNX 4.x filesystem.
 .TP
 .I rfs
-The Reiser filesystem (version 0.91).
+The Reiser filesystem (version 3.5.X, X > 11).
 .TP
 .I s86dl
 Sun Solaris on Intel platforms uses a sub-partitioning
 scheme on PC hard disks similar to the BSD disklabels.
+.TP
+.I xfs
+Silicon Graphic's journalling filesystem for Linux.
 .PP
 More filesystem guessing modules can be added at
 runtime (see the
@@ -488,8 +495,6 @@ logical partition entries but these are not accepted.
 .br
 \-\ Test on 64-bit architectures.
 .br
-\-\ Show disklabel and superblock information.
-.br
 \-\ Look for boot manager partitions (e.g. OS/2 BM).
 .br
 \-\ Think about reconstructing logical partition chains.
@@ -498,7 +503,7 @@ logical partition entries but these are not accepted.
 Please send bug reports, suggestions, comments etc. to
 
 .RS
-Michail Brzitwa <mb@ichabod.han.de>
+Michail Brzitwa <michail@brzitwa.de>
 .RE
 
 .SH "SEE ALSO"

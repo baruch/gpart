@@ -9,4 +9,4 @@ INSTALL = install
 RM      = rm -f
 #
 prg     = gpart
-version = 0.1f
+version = 0.1h

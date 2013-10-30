@@ -1,7 +1,7 @@
 /*      
  * gm_hmlvm.c -- gpart Linux LVM physical volume guessing module
  *
- * gpart (c) 1999,2000 Michail Brzitwa <mb@ichabod.han.de>
+ * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
  * Guess PC-type hard disk partitions.
  *
  * gpart is free software; you can redistribute it and/or modify
@@ -10,7 +10,8 @@
  * option) any later version.
  *
  * Created:   29.08.1999 <mb@ichabod.han.de>
- * Modified:
+ * Modified:  29.01.2001 <mb@ichabod.han.de>
+ *            Minor update to LVM 0.9.
  *
  */
 
@@ -19,7 +20,7 @@
 #include "gpart.h"
 #include "gm_hmlvm.h"
 
-static const char	rcsid[] = "$Id: gm_hmlvm.c,v 1.2 2000/02/26 23:15:32 mb Exp mb $";
+static const char	rcsid[] = "$Id: gm_hmlvm.c,v 1.3 2001/02/07 18:08:08 mb Exp mb $";
 
 
 int hmlvm_init(disk_desc *d,g_module *m)
@@ -42,12 +43,13 @@ int hmlvm_term(disk_desc *d)
 
 int hmlvm_gfun(disk_desc *d,g_module *m)
 {
-	pv_disk_v1_t		*pv;
+	pv_disk_t		*pv;
 	dos_part_entry		*pt = &m->m_part;
 	unsigned int		size;
+	s64_t			s;
 
 	m->m_guess = GM_NO;
-	pv = (pv_disk_v1_t *)&d->d_sbuf[LVM_PV_DISK_BASE];
+	pv = (pv_disk_t *)&d->d_sbuf[LVM_PV_DISK_BASE];
 	if ((strncmp((char *)pv->id,LVM_ID,sizeof(pv->id)) == 0) &&
 	    ((pv->version == 1) || (pv->version == 2)))
 	{
@@ -84,10 +86,9 @@ int hmlvm_gfun(disk_desc *d,g_module *m)
 
 		m->m_guess = GM_YES;
 		pt->p_start = d->d_nsb;
-		pt->p_size = pv->pv_size;
-		pt->p_size *= 512;
-		pt->p_size /= d->d_ssize;
-		pt->p_typ = 0xfe;
+		s = pv->pv_size; s *= 512; s /= d->d_ssize;
+		pt->p_size = s;
+		pt->p_typ = 0x8E;
 	}
 
 	return (1);

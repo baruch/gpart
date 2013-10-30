@@ -1,7 +1,7 @@
 /*
  * gm_ntfs.h -- gpart ntfs guessing module header
  * 
- * gpart (c) 1999,2000 Michail Brzitwa <mb@ichabod.han.de>
+ * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
  * Guess PC-type hard disk partitions.
  *
  * gpart is free software; you can redistribute it and/or modify
@@ -37,7 +37,7 @@
 typedef unsigned char		ntfs_u8;
 typedef unsigned short		ntfs_u16;
 typedef unsigned int		ntfs_u32;
-typedef unsigned long long	ntfs_u64;
+typedef s64_t			ntfs_u64;
 #endif /* NTFS_INTEGRAL_TYPES */
 #endif /* defined(i386) || defined(__i386__) || defined(__alpha__) */
 

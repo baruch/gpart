@@ -1,7 +1,7 @@
 /*
  * gpart.c -- gpart main
  *
- * gpart (c) 1999,2000 Michail Brzitwa <mb@ichabod.han.de>
+ * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
  * Guess PC-type hard disk partitions.
  *
  * gpart is free software; you can redistribute it and/or modify
@@ -32,6 +32,17 @@
  *            Make a MBR backup.
  *            Interactive mode now somehow works.
  *
+ *            14.05.2000 <mb@ichabod.han.de>
+ *            Made writing of guessed table also aligned.
+ *            Fixed stupid copy&paste bug in the check routine
+ *            (found by Bruno Bozza <brunobozza@hotmail.com>.
+ *
+ *            29.01.2001 <mb@ichabod.han.de>
+ *            Extended partition type on an LBA disk now 0x0f instead
+ *            of 0x05. Changed some partition types (get_part_type).
+ *            When comparing partition types in extptbl links, try
+ *            to compare similarity, not equality (is_same_partition_type).
+ *
  */
 
 
@@ -48,7 +59,7 @@
 #include "gpart.h"
 
 
-static const char	rcsid[] = "$Id: gpart.c,v 1.9 2000/02/26 23:15:31 mb Exp mb $";
+static const char	rcsid[] = "$Id: gpart.c,v 1.11 2001/02/07 18:08:08 mb Exp mb $";
 static const char	*gpart_version = PROGRAM " v" VERSION;
 
 
@@ -71,7 +82,7 @@ void usage()
 	fprintf(fp,"         [-K <last sector>][-k <# of sectors>][-L][-l <log file>]\n");
 	fprintf(fp,"         [-n <increment>][-q][-s <sector-size>][-t <module-name>]\n");
 	fprintf(fp,"         [-V][-v][-W <device>][-w <module-name,weight>]\n");
-	fprintf(fp,"%s (c) 1999,2000 Michail Brzitwa <mb@ichabod.han.de>.\n",gpart_version);
+	fprintf(fp,"%s (c) 1999-2001 Michail Brzitwa <michail@brzitwa.de>.\n",gpart_version);
 	fprintf(fp,"Guess PC-type hard disk partitions.\n\n");
 	if (! f_verbose)
 		return;
@@ -265,6 +276,9 @@ static char *get_part_type(int type)
 		{ 0x24, "NEC MS-DOS 3.x" },
 		{ 0x3C, "PowerQuest PartitionMagic recovery partition" },
 		{ 0x40, "VENIX 286" },
+		{ 0x4D, "QNX4.x" },
+		{ 0x4E, "QNX4.x 2nd part" },
+		{ 0x4F, "QNX4.x 3rd part" },
 		{ 0x50, "DM" },
 		{ 0x51, "DM" },
 		{ 0x51, "DM" },
@@ -283,6 +297,7 @@ static char *get_part_type(int type)
 		{ 0x83, "Linux ext2 filesystem" },
 		{ 0x85, "Extended Linux" },
 		{ 0x86, "FAT16 volume/stripe set" },
+		{ 0x8E, "Linux LVM physical volume" },
 		{ 0x93, "Amoeba filesystem" },
 		{ 0x94, "Amoeba bad block table" },
 		{ 0xA5, "FreeBSD/NetBSD/386BSD" },
@@ -295,10 +310,12 @@ static char *get_part_type(int type)
 		{ 0xE1, "SpeedStor 12-bit FAT extended" },
 		{ 0xE3, "Speed" },
 		{ 0xE4, "SpeedStor 16-bit FAT" },
+		{ 0xEB, "BeOS fs" },
 		{ 0xF1, "SpeedStor" },
 		{ 0xF2, "DOS 3.3+ Secondary" },
 		{ 0xF4, "SpeedStor" },
-		{ 0xFE, "Linux LVM physical volume" },
+		{ 0xFD, "Linux raid autodetect" },
+		{ 0xFE, "LANstep" },
 		{ 0xFF, "BBT (Bad Blocks Table)" }
 	};
 
@@ -374,6 +391,45 @@ static int no_of_real_partitions(dos_part_entry *p)
 		if (is_real_parttype(t))
 			nr++;
 	return (nr);
+}
+
+
+
+/*
+ * Test similarity of partition types
+ */
+
+static int is_same_partition_type(dos_part_entry *p1,dos_part_entry *p2)
+{
+	int		ret = 0;
+
+	switch (p1->p_typ)
+	{
+		case 0x01: case 0x11:
+			ret = (p2->p_typ == 0x06) || (p2->p_typ == 0x0E);
+			break;
+
+		case 0x06: case 0x0E: case 0x16:
+			ret = (p2->p_typ == 0x06) || (p2->p_typ == 0x0E) || (p2->p_typ == 0x16);
+			break;
+
+		case 0x05: case 0x0F:
+			ret = (p2->p_typ == 0x05) || (p2->p_typ == 0x0F);
+			break;
+
+		case 0x0B: case 0x0C:
+			ret = (p2->p_typ == 0x0B) || (p2->p_typ == 0x0C);
+			break;
+
+		case 0x8E: case 0xFE:
+			ret = (p2->p_typ == 0x8E) || (p2->p_typ == 0xFE);
+			break;
+
+		default :
+			ret = p1->p_typ == p2->p_typ;
+			break;
+	}
+	return (ret);
 }
 
 
@@ -1075,7 +1131,7 @@ guessit:
 	 */
 
 	if ((rd > 0) && (rd < bsize))
-		if (d->d_nsb + nsecs < d->d_nsecs)
+		if (d->d_nsb + nsecs + 1 < d->d_nsecs)
 		{
 			/*
 			 * short read not at end of disk
@@ -1402,7 +1458,7 @@ static int check_partition_list(disk_desc *d)
 			 */
 
 			p = &gp->g_p[0];
-			if (is_real_parttype(p) && (rp->p_typ == p->p_typ) &&
+			if (is_real_parttype(p) && is_same_partition_type(rp,p) &&
 			    (rp->p_size >= p->p_size))
 			{
 				if (! is_sane_partentry(d,p,1))
@@ -1535,7 +1591,9 @@ static int check_partition_list(disk_desc *d)
 				if (size && ofs)
 				{
 					p = &d->d_gpt.t_parts[n++];
-					p->p_typ = 0x05; p->p_start = ofs;
+					p->p_start = ofs;
+					p->p_typ = 0x05;
+					p->p_typ = d->d_lba ? 0x0F : 0x05;
 					p->p_size = size;
 					fillin_dos_chs(d,p,0);
 				}
@@ -1572,7 +1630,7 @@ static int check_partition_list(disk_desc *d)
 				if (f_verbose > 2)
 				{
 					pr(WARN,EM_PINCONS);
-					print_partition(d,p,gp->g_log ? 1 : 0,0);
+					print_partition(d,p,0,0);
 				}
 			}
 		}

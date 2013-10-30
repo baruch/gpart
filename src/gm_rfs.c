@@ -1,7 +1,7 @@
 /*      
  * gm_rfs.c -- gpart ReiserFS guessing module
  *
- * gpart (c) 1999,2000 Michail Brzitwa <mb@ichabod.han.de>
+ * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
  * Guess PC-type hard disk partitions.
  *
  * gpart is free software; you can redistribute it and/or modify
@@ -10,7 +10,8 @@
  * option) any later version.
  *
  * Created:   21.01.1999 <mb@ichabod.han.de>
- * Modified:
+ * Modified:  26.12.2000 Francis Devereux <francis@devereux.tc>
+ *            Added reiserfs 3.5.28 support.
  *
  */
 
@@ -19,7 +20,7 @@
 #include "gpart.h"
 #include "gm_rfs.h"
 
-static const char	rcsid[] = "$Id: gm_rfs.c,v 1.4 2000/02/26 23:15:32 mb Exp mb $";
+static const char	rcsid[] = "$Id: gm_rfs.c,v 1.5 2001/02/07 18:08:08 mb Exp mb $";
 
 
 int rfs_init(disk_desc *d,g_module *m)
@@ -44,10 +45,11 @@ int rfs_gfun(disk_desc *d,g_module *m)
 {
 	struct reiserfs_super_block	*sb;
 	dos_part_entry			*pt = &m->m_part;
+	s64_t				size;
 
 	m->m_guess = GM_NO;
 	sb = (struct reiserfs_super_block *)(d->d_sbuf + REISERFS_FIRST_BLOCK * 1024);
-	if (strncmp(sb->s_magic,REISERFS_SUPER_MAGIC,16) == 0)
+	if (strncmp(sb->s_magic,REISERFS_SUPER_MAGIC,12) == 0)
 	{
 		/*
 		 * sanity checks.
@@ -78,9 +80,8 @@ int rfs_gfun(disk_desc *d,g_module *m)
 
 		m->m_guess = GM_YES;
 		pt->p_start = d->d_nsb;
-		pt->p_size = sb->s_block_count;
-		pt->p_size *= sb->s_blocksize;
-		pt->p_size /= d->d_ssize;
+		size = sb->s_block_count; size *= sb->s_blocksize; size /= d->d_ssize;
+		pt->p_size = (unsigned long)size;
 		pt->p_typ = 0x83;
 	}
 	return (1);

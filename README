@@ -40,6 +40,9 @@
            0x81  "Minix V2"
    rfs     0x83  "Reiser filesystem"
    hmlvm   0xFE  "Linux LVM physical volumes"
+   qnx4    0x4F  "QNX 4.x"
+   beos    0xEB  "BeOS fs"
+   xfs     0x83  "SGI XFS filesystem"
 
 
 

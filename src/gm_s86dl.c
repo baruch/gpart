@@ -1,7 +1,7 @@
 /*      
  * gm_s86dl.c -- gpart solaris/x86 disklabel guessing module
  *
- * gpart (c) 1999,2000 Michail Brzitwa <mb@ichabod.han.de>
+ * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
  * Guess PC-type hard disk partitions.
  *
  * gpart is free software; you can redistribute it and/or modify
@@ -17,7 +17,7 @@
 #include "gpart.h"
 #include "gm_s86dl.h"
 
-static const char	rcsid[] = "$Id: gm_s86dl.c,v 1.5 2000/02/26 23:15:32 mb Exp mb $";
+static const char	rcsid[] = "$Id: gm_s86dl.c,v 1.6 2001/02/07 18:08:08 mb Exp mb $";
 
 
 int s86dl_init(disk_desc *d,g_module *m)

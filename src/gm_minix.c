@@ -1,7 +1,7 @@
 /*      
  * gm_minix.c -- gpart minix guessing module
  *
- * gpart (c) 1999,2000 Michail Brzitwa <mb@ichabod.han.de>
+ * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
  * Guess PC-type hard disk partitions.
  *
  * gpart is free software; you can redistribute it and/or modify
@@ -17,7 +17,7 @@
 #include "gpart.h"
 #include "gm_minix.h"
 
-static const char	rcsid[] = "$Id: gm_minix.c,v 1.4 2000/02/26 23:15:32 mb Exp mb $";
+static const char	rcsid[] = "$Id: gm_minix.c,v 1.5 2001/02/07 18:08:08 mb Exp mb $";
 
 
 int minix_init(disk_desc *d,g_module *m)

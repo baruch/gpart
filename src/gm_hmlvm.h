@@ -1,7 +1,7 @@
 /*
  * gm_hmlvm.h -- gpart Linux LVM physical volume guessing module header
  * 
- * gpart (c) 1999,2000 Michail Brzitwa <mb@ichabod.han.de>
+ * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
  * Guess PC-type hard disk partitions.
  *
  * gpart is free software; you can redistribute it and/or modify
@@ -18,13 +18,14 @@
 #define _GM_HMLVM_H
 
 /*
- * structs & defines gathered from LVM 0.7 lvm.h and liblvm.h
+ * structs & defines gathered from LVM 0.7/0.9 lvm.h and liblvm.h
  */
 
-
+#if !defined(__FreeBSD__)
 typedef unsigned char uint8_t;
 typedef unsigned short uint16_t;
 typedef unsigned int uint32_t;
+#endif
 
 
 /*
@@ -60,34 +61,32 @@ typedef struct {
 } lvm_disk_data_t;
 
 /*
- * Structure Physical Volume (PV) Version 1
+ * Structure Physical Volume (PV) Version 2
  */
 
 /* disk */
 typedef struct {
 	uint8_t id[2];		/* Identifier */
-	uint16_t version;	/* HM lvm version */
+	uint16_t version;		/* HM lvm version */
 	lvm_disk_data_t pv_on_disk;
 	lvm_disk_data_t vg_on_disk;
-	lvm_disk_data_t pv_namelist_on_disk;
+	lvm_disk_data_t pv_uuidlist_on_disk;
 	lvm_disk_data_t lv_on_disk;
 	lvm_disk_data_t pe_on_disk;
-	uint8_t pv_name[NAME_LEN];
+	uint8_t pv_uuid[NAME_LEN];
 	uint8_t vg_name[NAME_LEN];
 	uint8_t system_id[NAME_LEN];	/* for vgexport/vgimport */
 	uint32_t pv_major;
 	uint32_t pv_number;
 	uint32_t pv_status;
 	uint32_t pv_allocatable;
-	uint32_t pv_size;	/* HM */
+	uint32_t pv_size;		/* HM */
 	uint32_t lv_cur;
 	uint32_t pe_size;
 	uint32_t pe_total;
 	uint32_t pe_allocated;
-	uint32_t dummy1;
-	uint32_t dummy2;
-	uint32_t dummy3;
-} pv_disk_v1_t;
+} pv_disk_v2_t;
 
+#define pv_disk_t pv_disk_v2_t
 
 #endif /* _GM_HMLVM_H */

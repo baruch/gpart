@@ -1,7 +1,7 @@
 /*
  * gmodules.c -- gpart module functions
  *
- * gpart (c) 1999,2000 Michail Brzitwa <mb@ichabod.han.de>
+ * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
  * Guess PC-type hard disk partitions.
  *
  * gpart is free software; you can redistribute it and/or modify
@@ -10,7 +10,8 @@
  * option) any later version.
  *
  * Created:   04.01.1999 <mb@ichabod.han.de>
- * Modified:
+ * Modified:  29.01.2001 <mb@ichabod.han.de>
+ *            New modules: qnx & beos.
  *
  */
 
@@ -152,14 +153,17 @@ void g_mod_addinternals()
 
 	GMODINS(bsddl);
 	GMODINS(lswap);
+	GMODINS(qnx4);
 	GMODINS(rfs);
 	GMODINS(ntfs);
 	GMODINS(hpfs);
 	GMODINS(minix);
+	GMODINS(beos);
 	GMODINS(ext2);
 	GMODINS(fat);
 	GMODINS(s86dl);
 	GMODINS(hmlvm);
+	GMODINS(xfs);
 }
 
 
