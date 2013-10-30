@@ -16,6 +16,7 @@
  */
 
 
+#include <errno.h>
 #include <stdio.h>
 #include <string.h>
 #include <sys/ioctl.h>
@@ -27,7 +28,6 @@
 #endif
 
 #if defined(__FreeBSD__)
-#include <errno.h>
 #include <sys/disklabel.h>
 #endif
 
