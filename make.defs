@@ -2,7 +2,7 @@
 #
 #
 CC      = gcc
-CFLAGS  = -Wall -O2 $(RPM_OPT_FLAGS)
+CFLAGS  = -Wall -O2 $(RPM_OPT_FLAGS) -D_FILE_OFFSET_BITS=64
 LDFLAGS =
 MAKEDEP = gcc -M
 INSTALL = install
