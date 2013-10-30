@@ -374,7 +374,7 @@ static int no_of_ext_partitions(dos_part_entry *p)
 	dos_part_entry	*t;
 	int		ne = 0;
 
-	for (t = &p[0]; t < &p[NDOSPARTS]; t++)
+	for (t = &p[0]; t <= &p[NDOSPARTS - 1]; t++)
 		if (is_ext_parttype(t))
 			ne++;
 	return (ne);
@@ -387,7 +387,7 @@ static int no_of_real_partitions(dos_part_entry *p)
 	dos_part_entry	*t;
 	int		nr = 0;
 
-	for (t = &p[0]; t < &p[NDOSPARTS]; t++)
+	for (t = &p[0]; t <= &p[NDOSPARTS - 1]; t++)
 		if (is_real_parttype(t))
 			nr++;
 	return (nr);
@@ -457,7 +457,7 @@ static int is_ext_parttable(disk_desc *d,byte_t *buf)
 	 * ptbl sanity checks.
 	 */
 
-	for (t = p; t < &p[NDOSPARTS]; t++)
+	for (t = p; t <= &p[NDOSPARTS - 1]; t++)
 		if (! is_sane_partentry(d,t,0))
 			return (0);
 
@@ -706,7 +706,7 @@ static void read_ext_part_table(disk_desc *d,dos_part_table *pt)
 	while (1)
 	{
 		ep = 0;
-		for (p = pt->t_parts; p < &pt->t_parts[NDOSPARTS + 1]; p++)
+		for (p = pt->t_parts; p <= &pt->t_parts[NDOSPARTS - 1]; p++)
 			if (is_ext_parttype(p))
 			{
 				if (ep == 0)
@@ -1430,7 +1430,7 @@ static int check_partition_list(disk_desc *d)
 			if (no_of_ext_partitions(gp->g_p) == 0)
 				in_ext = 0;
 			rp = 0;
-			for (p = &gp->g_p[0]; p < &gp->g_p[NDOSPARTS]; p++)
+			for (p = &gp->g_p[0]; p <= &gp->g_p[NDOSPARTS - 1]; p++)
 			{
 				if (is_real_parttype(p))
 					rp = p;
@@ -1531,7 +1531,7 @@ static int check_partition_list(disk_desc *d)
 				in_ext = 1; ofs = gp->g_sec;
 			}
 			rp = ep = 0;
-			for (p = &gp->g_p[0]; p < &gp->g_p[NDOSPARTS]; p++)
+			for (p = &gp->g_p[0]; p <= &gp->g_p[NDOSPARTS - 1]; p++)
 			{
 				if (is_real_parttype(p))
 					rp = p;
