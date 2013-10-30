@@ -7,6 +7,8 @@ include ../make.defs
 CFLAGS+=-DVERSION=\"$(version)\"
 ifeq ($(shell uname),Linux)
 LIBS=-ldl
+CFLAGS += -D__USE_FILE_OFFSET64 -D__USE_LARGEFILE64
+CFLAGS += -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
 endif
 
 ifdef DEBUG
