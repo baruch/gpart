@@ -46,7 +46,6 @@ int ntfs_term(disk_desc *d)
 
 int ntfs_gfun(disk_desc *d,g_module *m)
 {
-	int	blocksize, clusterfactor, clustersize;
 	int	mft_clusters_per_record;
 	s64_t	size, ls;
         byte_t	*ubuf, *sbuf;
@@ -65,19 +64,10 @@ int ntfs_gfun(disk_desc *d,g_module *m)
 		if (NTFS_GETU32(d->d_sbuf + 0x44) > 256UL)
 			return (1);
 
-		blocksize = NTFS_GETU16(d->d_sbuf + 0x0B);
-		clusterfactor = NTFS_GETU8(d->d_sbuf + 0x0D);
-		clustersize = blocksize * clusterfactor;
 		mft_clusters_per_record = NTFS_GETS8(d->d_sbuf + 0x40);
 		if ((mft_clusters_per_record < 0) && (mft_clusters_per_record != -10))
 			return (1);
 		size = NTFS_GETU64(d->d_sbuf + 0x28);
-
-#if 0
-		size /= clusterfactor;
-		size *= clustersize;
-		size /= d->d_ssize;
-#endif
 
 		/*
 		 * look for an additional backup boot sector at the end of
