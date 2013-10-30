@@ -154,7 +154,7 @@ void g_mod_addinternals()
 	GMODINS(bsddl);
 	GMODINS(lswap);
 	GMODINS(qnx4);
-	GMODINS(rfs);
+	GMODINS(reiserfs);
 	GMODINS(ntfs);
 	GMODINS(hpfs);
 	GMODINS(minix);

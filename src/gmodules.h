@@ -63,7 +63,7 @@ g_module *g_mod_setweight(char *,float);
 
 GMODDECL(bsddl); GMODDECL(ext2); GMODDECL(fat);
 GMODDECL(hpfs); GMODDECL(lswap); GMODDECL(ntfs);
-GMODDECL(s86dl); GMODDECL(minix); GMODDECL(rfs);
+GMODDECL(s86dl); GMODDECL(minix); GMODDECL(reiserfs);
 GMODDECL(hmlvm); GMODDECL(qnx4); GMODDECL(beos);
 GMODDECL(xfs);
 

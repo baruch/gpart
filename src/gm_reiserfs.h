@@ -1,5 +1,5 @@
 /*
- * gm_rfs.h -- gpart ReiserFS guessing module header
+ * gm_reiserfs.h -- gpart ReiserFS guessing module header
  * 
  * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
  * Guess PC-type hard disk partitions.
@@ -12,11 +12,13 @@
  * Created:   21.01.1999 <mb@ichabod.han.de>
  * Modified:  26.12.2000 Francis Devereux <francis@devereux.tc>
  *            Update support reiserfs version 3.5.28
+ * Modified:  10.01.2003 Yury Umanets <umka@namesys.com>
+ *            Added reiserfs 3.6.x support.
  *
  */
 
-#ifndef _GM_RFS_H
-#define _GM_RFS_H
+#ifndef _GM_reiserfs_H
+#define _GM_reiserfs_H
 
 /* imported from asm/types.h */
 typedef __signed__ char __s8;
@@ -29,16 +31,18 @@ typedef __signed__ int __s32;
 typedef unsigned int __u32;
 
 /*
- * taken from ReiserFS v3.5.28. Reiserfs Copyright 1996-2000 Hans Reiser
+ * taken from ReiserFS v3.5.28, v3.6.x. Reiserfs Copyright 1996-2000 Hans Reiser
  */
 
-#define REISERFS_SUPER_MAGIC		"ReIsErFs"
+#define REISERFS_SUPER_V35_MAGIC	"ReIsErFs"
+#define REISERFS_SUPER_V36_MAGIC	"ReIsEr2Fs"
+
 #define REISERFS_FIRST_BLOCK		64
 #define REISERFS_VALID_FS		1
 #define REISERFS_ERROR_FS		2
 #define REISERFS_MIN_BLOCK_AMOUNT	100
 
-struct reiserfs_super_block
+struct reiserfs_super_block_v35
 {
 	__u32 s_block_count;		/* blocks count         */
 	__u32 s_free_blocks;		/* free blocks count    */
@@ -62,7 +66,17 @@ struct reiserfs_super_block
 	__u16 s_reserved;
 };
 
-#define SB_SIZE (sizeof(struct reiserfs_super_block))
+#define SB_V35_SIZE (sizeof(struct reiserfs_super_block_v35))
 
+struct reiserfs_super_block_v36 {
+	struct reiserfs_super_block_v35 s_v35;
+	__u32 s_inode_generation; 
+	__u32 s_flags;
+	char s_uuid[16];
+	char s_label[16];
+	char s_unused[88];
+};
 
-#endif /* _GM_RFS_H */
+#define SB_V36_SIZE (sizeof(struct reiserfs_super_block_v36))
+
+#endif /* _GM_REISERFS_H */

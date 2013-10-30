@@ -63,8 +63,8 @@ MS Windows NT/2000 filesystem.
 .I qnx4
 QNX 4.x filesystem.
 .TP
-.I rfs
-The Reiser filesystem (version 3.5.X, X > 11).
+.I reiserfs
+The Reiser filesystem (version 3.5.X, X > 11, 3.6.X).
 .TP
 .I s86dl
 Sun Solaris on Intel platforms uses a sub-partitioning
