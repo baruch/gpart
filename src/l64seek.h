@@ -28,6 +28,7 @@
 
 #if defined(__linux__)
 #	include <linux/unistd.h>
+# include <sys/syscall.h>
 #	include <sys/types.h>
 	typedef int64_t off64_t;
 #endif
