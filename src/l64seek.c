@@ -31,20 +31,7 @@ off64_t l64seek(int fd,off64_t offset,int whence)
 {
 	off64_t		ret = (off64_t)-1;
 
-#if defined(__linux__) && defined(__i386__)
-	int		iret;
-	unsigned long	ohi, olo;
-
-	ohi = (unsigned long)((offset >> 32) & 0xFFFFFFFF);
-	olo = (unsigned long)(offset & 0xFFFFFFFF);
-	iret = syscall(__NR__llseek,fd,ohi,olo,&ret,whence);
-	if (iret == -1)
-		ret = (off64_t)-1;
-#endif
-
-#if defined(__FreeBSD__) || (defined(__linux__) && defined(__alpha__))
 	ret = lseek(fd,offset,whence);
-#endif
 
 	return (ret);
 }
