@@ -602,11 +602,11 @@ static void print_ext_partitions(disk_desc *d,s64_t offset)
 	for ( ; pt; pt = pt->t_ext)
 	{
 		pr(MSG,PM_EXTPART);
-		for (p = pt->t_parts; p < &pt->t_parts[NDOSPARTS + 1]; p++)
+		for (p = pt->t_parts; p <= &pt->t_parts[NDOSPARTS - 1]; p++)
 			if (is_real_parttype(p))
 				print_partition(d,p,1,offset + extst);
 
-		for (p = pt->t_parts; p < &pt->t_parts[NDOSPARTS + 1]; p++)
+		for (p = pt->t_parts; p <= &pt->t_parts[NDOSPARTS - 1]; p++)
 			if (is_ext_parttype(p))
 				extst = p->p_start;
 	}
