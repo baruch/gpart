@@ -33,7 +33,7 @@ $(prg): $(obj)
 
 install: $(prg)
 	$(INSTALL) -d $(bindir)
-	$(INSTALL) -s $(prg) $(bindir)
+	$(INSTALL) $(prg) $(bindir)
 
 uninstall:
 	$(RM) $(bindir)/$(prg)
