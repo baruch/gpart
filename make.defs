@@ -2,7 +2,7 @@
 #
 #
 CC      = gcc
-CFLAGS  = -Wall -O2 -pedantic
+CFLAGS  = -Wall -O2 $(RPM_OPT_FLAGS)
 LDFLAGS =
 MAKEDEP = gcc -M
 INSTALL = install
