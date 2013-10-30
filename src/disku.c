@@ -32,6 +32,7 @@
 #include <sys/disklabel.h>
 #endif
 
+#include <unistd.h>
 
 
 /*
@@ -42,11 +43,35 @@
 struct disk_geom *disk_geometry(disk_desc *d)
 {
 	static struct disk_geom	g;
+	long			nsects;
 
 #if defined(__linux__)
 	struct hd_geometry	hg;
-	long			nsects;
+#endif
+#if defined(__FreeBSD__)
+	struct disklabel	dl;
+#endif
 
+	struct stat st;
+	int ret;
+	long lba;
+	ret = stat(d->d_dev, &st);
+	if (ret == 0)
+	{
+		if (S_ISREG(st.st_mode))
+		{
+			nsects = st.st_size / 512;
+			if (nsects == 0)
+				pr(FATAL, EM_FATALERROR, "Not a block device image file");
+			lba = nsects - 1;
+			g.d_h = (lba / 63) % 255;
+			g.d_s = lba % 63 + 1;
+			g.d_c = lba / (255 * 63);
+			return (&g);
+		}
+	}
+
+#if defined(__linux__)
 	if (ioctl(d->d_fd,HDIO_GETGEO,&hg) == -1)
 		pr(FATAL,EM_IOCTLFAILED,"HDIO_GETGEO",strerror(errno));
 #ifdef BLKGETSIZE
@@ -62,7 +87,6 @@ struct disk_geom *disk_geometry(disk_desc *d)
 #endif
 
 #if defined(__FreeBSD__)
-	struct disklabel	dl;
 	if (ioctl(d->d_fd,DIOCGDINFO,&dl) == -1)
 		pr(FATAL,EM_IOCTLFAILED,"DIOCGDINFO",strerror(errno));
 	g.d_c = dl.d_ncylinders;
