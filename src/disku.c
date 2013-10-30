@@ -20,6 +20,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <sys/ioctl.h>
+#include <errno.h>
 #include "gpart.h"
 
 #if defined(__linux__)
