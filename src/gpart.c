@@ -1221,7 +1221,7 @@ static int make_mbr_backup(disk_desc *d,char *bfile)
 {
 	int		fd, ret = 0;
 
-	if ((fd = open(bfile,O_WRONLY|O_CREAT)) < 0)
+	if ((fd = open(bfile,S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH,O_WRONLY|O_CREAT)) < 0)
 		return (ret);
 
 	if (write(fd,d->d_pt.t_boot,512) == 512)
