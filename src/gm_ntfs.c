@@ -73,9 +73,11 @@ int ntfs_gfun(disk_desc *d,g_module *m)
 			return (1);
 		size = NTFS_GETU64(d->d_sbuf + 0x28);
 
+#if 0
 		size /= clusterfactor;
 		size *= clustersize;
 		size /= d->d_ssize;
+#endif
 
 		/*
 		 * look for an additional backup boot sector at the end of
