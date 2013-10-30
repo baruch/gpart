@@ -50,7 +50,7 @@ int reiserfs_gfun(disk_desc *d,g_module *m)
 	s64_t				size;
 
 	m->m_guess = GM_NO;
-	sb = (struct reiserfs_super_blockv35 *)(d->d_sbuf + REISERFS_FIRST_BLOCK * 1024);
+	sb = (struct reiserfs_super_block_v35 *)(d->d_sbuf + REISERFS_FIRST_BLOCK * 1024);
 	if (strncmp(sb->s_magic,REISERFS_SUPER_V35_MAGIC,12) == 0 || 
 	    strncmp(sb->s_magic,REISERFS_SUPER_V36_MAGIC,12) == 0)
 	{
