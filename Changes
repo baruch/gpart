@@ -1,0 +1,32 @@
+v0.1f
+ - Default scan increment 'h' again.
+ - Fixed wrong head-boundary condition.
+ - Introduced possibility to edit guessed partitions.
+ - Scan now starts on (sectors/head) unless -k <start> was given.
+ - Length of guessed NTFS partitions now includes NTFS backup boot
+   sector.
+
+v0.1e
+ - Default scan increment now 's', extended ptbl boundary condition
+   now depends on scan increment (head if 's', else cylinder boundary).
+ - Added LVM physical volume module (LVM by Heinz Mauelshagen).
+
+v0.1d
+ - Cope with short reads/read errors from disk (corrupted sectors etc.).
+ - When flagging probable partitions 'invalid' give a reason why.
+ - Fixed buggy ext2 spare superblock location calculation.
+
+v0.1c
+ - Don't flag partitions 'invalid' which are smaller than their
+   partition table entry.
+ - Fixed buggy rejection of some valid ext2 superblocks.
+ - Fixed linux swap partition size calculation.
+ - Added ReiserFS module.
+
+v0.1b
+ - First public version.
+ - Made 'fast' scan the default behaviour (-f enables the complete scan).
+ - Increased tolerance in recognizing extended partition tables.
+
+v0.1a
+ - Initial version.

@@ -1,0 +1,12 @@
+#
+#
+#
+CC      = gcc
+CFLAGS  = -Wall -O2 -pedantic
+LDFLAGS =
+MAKEDEP = gcc -M
+INSTALL = install
+RM      = rm -f
+#
+prg     = gpart
+version = 0.1f

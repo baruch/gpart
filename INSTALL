@@ -1,0 +1,18 @@
+
+   gpart Compilation and Installation
+
+
+   Up to now a configure script for gpart does not seem necessary,
+   it should compile under Linux and FreeBSD using GNU cc and GNU
+   make.
+
+   Steps to compile and install:
+
+    - change the installation directory prefix "prefix" in the
+      file "inst.defs". The default is "/usr/local".
+
+    - type "make".
+    - if no errors were encountered, type "make install".
+
+   It is a good idea to read the man page before starting to
+   play around.

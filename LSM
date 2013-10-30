@@ -1,0 +1,21 @@
+Begin3
+Title:          gpart
+Version:        0.1f
+Entered-date:   27FEB00
+Description: 	A tool which tries to guess the primary partition
+                table of a PC-type hard disk in case the primary
+                partition table in sector 0 is damaged, incorrect
+                or deleted. The guessed table can be written to a
+                file or device. Supported (guessable) filesystem or
+                partition types: DOS/Windows FAT, Linux ext2 and
+                swap, OS/2 HPFS, Windows NTFS, FreeBSD and Solaris/x86
+                disklabels, Minix FS, Reiser FS, LVM physical volumes.
+Keywords:       hard disk primary partition table reconstruction
+Author:         mb@ichabod.han.de (Michail Brzitwa)
+Maintained-by:  mb@ichabod.han.de (Michail Brzitwa)
+Primary-site:   http://home.pages.de/~michab/gpart/
+                ~47k gpart-0.1f.tar.gz
+Alternate-site: sunsite.unc.edu /pub/Linux/system/filesystems
+Platforms:      Linux, FreeBSD
+Copying-policy: GPL
+End
