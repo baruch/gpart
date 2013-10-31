@@ -1,3 +1,7 @@
+v0.1i
+  - Switch to autoconf/automake for cross-platform support
+  - Integrate patches from distributions to fix build and overflow issues
+
 v0.1h
  - New support for the following filesystems: BeOS, QNX 4.x & SGI XFS.
  - Updated Reiser filesystem support (Francis Devereux <francis@devereux.tc>).
