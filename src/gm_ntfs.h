@@ -46,15 +46,15 @@ typedef int16_t             ntfs_s16;
 
 /* Macros reading unsigned integers from a byte pointer */
 #define NTFS_GETU8(p)		(*(ntfs_u8*)(p))
-#define NTFS_GETU16(p)		((ntfs_u16)__cpu_to_le16(*(ntfs_u16*)(p)))
+#define NTFS_GETU16(p)		((ntfs_u16)htole16(*(ntfs_u16*)(p)))
 #define NTFS_GETU24(p)		((ntfs_u32)NTFS_GETU16(p) | \
 		                     ((ntfs_u32)NTFS_GETU8(((char*)p)+2))<<16)
-#define NTFS_GETU32(p)		((ntfs_u32)__cpu_to_le32(*(ntfs_u32*)(p)))
-#define NTFS_GETU64(p)		((ntfs_u64)__cpu_to_le64(*(ntfs_u64*)(p)))
+#define NTFS_GETU32(p)		((ntfs_u32)htole32(*(ntfs_u32*)(p)))
+#define NTFS_GETU64(p)		((ntfs_u64)htole64(*(ntfs_u64*)(p)))
 
 /* Macros reading signed integers, returning int */
 #define NTFS_GETS8(p)		(*(ntfs_s8*)(p))
-#define NTFS_GETS16(p)		((ntfs_s16)__cpu_to_le16(*(ntfs_s16*)(p)))
+#define NTFS_GETS16(p)		((ntfs_s16)htole16(*(ntfs_s16*)(p)))
 #define NTFS_GETS24(p)		(NTFS_GETU24(p) < 0x800000 ? \
 								(int)NTFS_GETU24(p) : \
 								(int)(NTFS_GETU24(p) - 0x1000000))
