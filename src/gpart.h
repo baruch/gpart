@@ -22,52 +22,18 @@
 #include "errmsgs.h"
 #include "l64seek.h"
 
+#include <stdint.h>
 
-typedef unsigned char byte_t;
+typedef uint8_t byte_t;
 
 
 
-/*
- * endianness (incomplete, later)
- */
-
-#if defined(__i386__) || defined(__alpha__)
-#	define le16(x)	(x)		/* x as little endian */
-#	define be16(x)	((((x)&0xff00)>>8)			| \
-			(((x)&0x00ff)<<8))
-#	define le32(x)	(x)
-#	define be32(x)	((((x)&0xff000000L)>>24)		| \
-			(((x)&0x00ff0000L)>>8)			| \
-			(((x)&0x0000ff00L)<<8)			| \
-			(((x)&0x000000ffL)<<24))
-#	define le64(x)	(x)
-#	define be64(x)	((((x)&0xff00000000000000LL)>>56)	| \
-			(((x)&0x00ff000000000000LL)>>40)	| \
-			(((x)&0x0000ff0000000000LL)>>24)	| \
-			(((x)&0x000000ff00000000LL)>>8)		| \
-			(((x)&0x00000000ff000000LL)<<8)		| \
-			(((x)&0x0000000000ff0000LL)<<24)	| \
-			(((x)&0x000000000000ff00LL)<<40)	| \
-			(((x)&0x00000000000000ffLL)<<56))
-#else /* bigendian */
-#	define le16(x)	((((x)&0xff00)>>8)			| \
-			(((x)&0x00ff)<<8))
-#	define be16(x)	(x)
-#	define le32(x)	((((x)&0xff000000L)>>24)		| \
-			(((x)&0x00ff0000L)>>8)			| \
-			(((x)&0x0000ff00L)<<8)			| \
-			(((x)&0x000000ffL)<<24))
-#	define be32(x)	(x)
-#	define le64(x)	((((x)&0xff00000000000000LL)>>56)	| \
-			(((x)&0x00ff000000000000LL)>>40)	| \
-			(((x)&0x0000ff0000000000LL)>>24)	| \
-			(((x)&0x000000ff00000000LL)>>8)		| \
-			(((x)&0x00000000ff000000LL)<<8)		| \
-			(((x)&0x0000000000ff0000LL)<<24)	| \
-			(((x)&0x000000000000ff00LL)<<40)	| \
-			(((x)&0x00000000000000ffLL)<<56))
-#	define be64(x)	(x)
-#endif
+#define le16(x) htole16(x)
+#define be16(x) htobe16(x)
+#define le32(x) htole32(x)
+#define be32(x) htobe32(x)
+#define le64(x) htole64(x)
+#define be64(x) htobe64(x)
 
 
 #ifndef max
@@ -112,8 +78,8 @@ typedef struct
 	byte_t		p_ehd;		/* end head */
 	byte_t		p_esect;	/* end sector */
 	byte_t		p_ecyl;		/* end cylinder */
-	unsigned long	p_start;	/* start sector (absolute) */
-	unsigned long	p_size;		/* # of sectors */
+	uint32_t	p_start;	/* start sector (absolute) */
+	uint32_t    p_size;		/* # of sectors */
 } dos_part_entry;
 
 
@@ -123,7 +89,7 @@ typedef struct dos_pt
 	byte_t		_align[2];
 	byte_t		t_boot[DOSPARTOFF];
 	dos_part_entry	t_parts[NDOSPARTS];
-	unsigned short	t_magic;	/* DOSPTMAGIC */
+	uint16_t	t_magic;	/* DOSPTMAGIC */
 } dos_part_table;
 
 
