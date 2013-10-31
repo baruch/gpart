@@ -60,7 +60,7 @@
 
 
 static const char	rcsid[] = "$Id: gpart.c,v 1.11 2001/02/07 18:08:08 mb Exp mb $";
-static const char	*gpart_version = PROGRAM " v" VERSION;
+static const char	*gpart_version = PACKAGE_NAME " v" VERSION;
 
 
 int		f_check = 0, f_verbose = 0, f_dontguess = 0, f_fast = 1;
@@ -77,7 +77,7 @@ void usage()
 {
 	FILE		*fp = stderr;
 
-	fprintf(fp,"Usage: %s [options] device\n",PROGRAM);
+	fprintf(fp,"Usage: %s [options] device\n",PACKAGE_NAME);
 	fprintf(fp,"Options: [-b <backup MBR>][-C c,h,s][-c][-d][-E][-e][-f][-g][-h][-i]\n");
 	fprintf(fp,"         [-K <last sector>][-k <# of sectors>][-L][-l <log file>]\n");
 	fprintf(fp,"         [-n <increment>][-q][-s <sector-size>][-t <module-name>]\n");

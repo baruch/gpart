@@ -17,10 +17,10 @@
 #ifndef _GPART_H
 #define _GPART_H
 
+#include "config.h"
+
 #include "errmsgs.h"
 #include "l64seek.h"
-
-#define PROGRAM		"gpart"
 
 
 typedef unsigned char byte_t;

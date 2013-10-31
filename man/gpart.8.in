@@ -1,7 +1,7 @@
 .\"
-.\" gpart v%VERSION% man page (c) Jan 1999 Michail Brzitwa
+.\" gpart v@VERSION@ man page (c) Jan 1999 Michail Brzitwa
 .\"
-.TH GPART %MANEXT% "January 2001" "Administration Tools"
+.TH GPART 8 "January 2001" "Administration Tools"
 .SH NAME
 gpart \- guess PC-type hard disk partitions
 .SH SYNOPSIS
