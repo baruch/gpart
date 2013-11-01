@@ -67,7 +67,7 @@ int		f_check = 0, f_verbose = 0, f_dontguess = 0, f_fast = 1;
 int		f_getgeom = 1, f_interactive = 0, f_quiet = 0, f_testext = 1;
 int		f_skiperrors = 1, berrno = 0;
 int		(*boundary_fun)(disk_desc *,s64_t);
-unsigned long	increment = 'h', gc = 0, gh = 0, gs = 0;
+unsigned long	increment = 's', gc = 0, gh = 0, gs = 0;
 s64_t		skipsec = 0, maxsec = 0;
 FILE		*logfile = 0;
 
