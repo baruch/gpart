@@ -29,7 +29,9 @@
 #endif
 
 #if defined(__FreeBSD__)
+#include <sys/param.h>
 #include <sys/disklabel.h>
+#include <sys/disk.h>
 #endif
 
 #include <unistd.h>
@@ -87,11 +89,26 @@ struct disk_geom *disk_geometry(disk_desc *d)
 #endif
 
 #if defined(__FreeBSD__)
-	if (ioctl(d->d_fd,DIOCGDINFO,&dl) == -1)
-		pr(FATAL,EM_IOCTLFAILED,"DIOCGDINFO",strerror(errno));
-	g.d_c = dl.d_ncylinders;
-	g.d_h = dl.d_ntracks;
-	g.d_s = dl.d_nsectors;
+	struct disklabel	loclab;
+	u_int    u;
+	off_t	 o; /* total disk size */
+
+	if (ioctl(d->d_fd, DIOCGFWSECTORS, &u) == 0)
+		g.d_s = u;
+	else
+		pr(FATAL, EM_IOCTLFAILED, "DIOCGFWSECTORS", strerror(errno));
+		// loclab.d_nsectors = 63;
+	if (ioctl(d->d_fd, DIOCGFWHEADS, &u) == 0)
+		g.d_h = u;
+	else
+		pr(FATAL, EM_IOCTLFAILED, "DIOCGFWHEADS", strerror(errno));
+	if (ioctl(d->d_fd, DIOCGSECTORSIZE, &u) == 0)
+		if (u != 512)
+		    pr(FATAL, "sector size not a multiple of 512");
+	if (ioctl(d->d_fd, DIOCGMEDIASIZE, &o))
+		pr(FATAL, EM_IOCTLFAILED, "DIOCGMEDIASIZE", strerror(errno));
+
+	g.d_c = o / u / g.d_h / g.d_s;
 #endif
 
 	return (&g);
