@@ -45,7 +45,9 @@
 struct disk_geom *disk_geometry(disk_desc *d)
 {
 	static struct disk_geom	g;
-	long			nsects;
+	uint64_t			nsects;
+
+	memset(&g, 0, sizeof(g));
 
 #if defined(__linux__)
 	struct hd_geometry	hg;
@@ -56,7 +58,7 @@ struct disk_geom *disk_geometry(disk_desc *d)
 
 	struct stat st;
 	int ret;
-	long lba;
+	uint64_t lba;
 	ret = stat(d->d_dev, &st);
 	if (ret == 0)
 	{
@@ -69,6 +71,7 @@ struct disk_geom *disk_geometry(disk_desc *d)
 			g.d_h = (lba / 63) % 255;
 			g.d_s = lba % 63 + 1;
 			g.d_c = lba / (255 * 63);
+			g.d_nsecs = nsects;
 			return (&g);
 		}
 	}
@@ -79,6 +82,7 @@ struct disk_geom *disk_geometry(disk_desc *d)
 #ifdef BLKGETSIZE
 	if (ioctl(d->d_fd,BLKGETSIZE,&nsects) == -1)
 		pr(FATAL,EM_IOCTLFAILED,"BLKGETSIZE",strerror(errno));
+	g.d_nsecs = nsects;
 	g.d_c = nsects / (hg.heads * hg.sectors);
 #else
 	g.d_c = hg.cylinders;
@@ -108,7 +112,8 @@ struct disk_geom *disk_geometry(disk_desc *d)
 	if (ioctl(d->d_fd, DIOCGMEDIASIZE, &o))
 		pr(FATAL, EM_IOCTLFAILED, "DIOCGMEDIASIZE", strerror(errno));
 
-	g.d_c = o / u / g.d_h / g.d_s;
+	g.d_nsecs = o / u;
+	g.d_c = g.d_nsecs / g.d_h / g.d_s;
 #endif
 
 	return (&g);

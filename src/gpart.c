@@ -833,6 +833,8 @@ static disk_desc *get_disk_desc(char *dev,int sectsize)
 			pr(FATAL,EM_CANTGETGEOM);
 		memcpy(&d->d_dg,dg,sizeof(struct disk_geom));
 
+		d->d_nsecs = dg->d_nsecs;
+
 		/*
 		 * command line geometry overrides
 		 */
@@ -849,9 +851,14 @@ static disk_desc *get_disk_desc(char *dev,int sectsize)
 	}
 	if (d->d_dg.d_c < 1024) d->d_dosc = 1;
 	if ((d->d_dg.d_h > 16) || (d->d_dg.d_s > 63)) d->d_lba = 1;
-	d->d_nsecs = d->d_dg.d_c;
-	d->d_nsecs *= d->d_dg.d_h;
-	d->d_nsecs *= d->d_dg.d_s;
+
+	if (gh && gc && gs) {
+		/* Override number of sectors with command line parameters */
+		d->d_nsecs = d->d_dg.d_c;
+		d->d_nsecs *= d->d_dg.d_h;
+		d->d_nsecs *= d->d_dg.d_s;
+	}
+
 	read_ext_part_table(d,&d->d_pt);
 	close(d->d_fd);
 	free((void *)ubuf);

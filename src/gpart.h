@@ -122,9 +122,7 @@ typedef struct
 		long	d_c;		/* cylinder count */
 		long	d_h;		/* heads/cyl */
 		long	d_s;		/* sectors/head */
-		long	d_rc;		/* real values if the above are */
-		long	d_rh;		/* translated */
-		long	d_rs;
+		uint64_t d_nsecs;   /* Number of sectors total */
 	} d_dg;
 	unsigned int	d_lba	: 1;
 	unsigned int	d_dosc	: 1;	/* dos compatible? (g_c < 1024) */
