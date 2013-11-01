@@ -1,3 +1,8 @@
+v0.2
+  - Import some FreeBSD patches
+  - Default scan by sector size to handle new 4k alignment method
+  - Properly consider the real size of the disk to not invalidate partitions
+
 v0.1i
   - Switch to autoconf/automake for cross-platform support
   - Integrate patches from distributions to fix build and overflow issues

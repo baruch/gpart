@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT(gpart, 0.1i, https://github.com/baruch/gpart/issues)
+AC_INIT(gpart, 0.2, https://github.com/baruch/gpart/issues)
 AM_INIT_AUTOMAKE([1.14])
 AC_CONFIG_SRCDIR([src/gpart.c])
 AC_CONFIG_HEADERS([config.h])
