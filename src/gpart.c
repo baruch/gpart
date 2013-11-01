@@ -84,8 +84,6 @@ void usage()
 	fprintf(fp,"         [-V][-v][-W <device>][-w <module-name,weight>]\n");
 	fprintf(fp,"%s (c) 1999-2001 Michail Brzitwa <michail@brzitwa.de>.\n",gpart_version);
 	fprintf(fp,"Guess PC-type hard disk partitions.\n\n");
-	if (! f_verbose)
-		return;
 	fprintf(fp,"Options:\n");
 	fprintf(fp," -b  Save a backup of the original MBR to specified file.\n");
 	fprintf(fp," -C  Set c/h/s to be used in the scan.\n");
