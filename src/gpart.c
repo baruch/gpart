@@ -80,7 +80,7 @@ void usage()
 	fprintf(fp,"Usage: %s [options] device\n",PACKAGE_NAME);
 	fprintf(fp,"Options: [-b <backup MBR>][-C c,h,s][-c][-d][-E][-e][-f][-g][-h][-i]\n");
 	fprintf(fp,"         [-K <last sector>][-k <# of sectors>][-L][-l <log file>]\n");
-	fprintf(fp,"         [-n <increment>][-q][-s <sector-size>][-t <module-name>]\n");
+	fprintf(fp,"         [-n <increment>][-q][-s <sector-size>]\n");
 	fprintf(fp,"         [-V][-v][-W <device>][-w <module-name,weight>]\n");
 	fprintf(fp,"%s (c) 1999-2001 Michail Brzitwa <michail@brzitwa.de>.\n",gpart_version);
 	fprintf(fp,"Guess PC-type hard disk partitions.\n\n");
@@ -104,7 +104,6 @@ void usage()
 	fprintf(fp," -n  Scan increment: number or 's' sector, 'h' head, 'c' cylinder.\n");
 	fprintf(fp," -q  Run quiet (however log file is written if specified).\n");
 	fprintf(fp," -s  Sector size to use (disable sector size probing).\n");
-	fprintf(fp," -t  Name of a guessing module to be added.\n");
 	fprintf(fp," -V  Show version.\n");
 	fprintf(fp," -v  Verbose mode. Can be given more than once.\n");
 	fprintf(fp," -W  Write guessed primary partition table to given device or file.\n");
@@ -1769,10 +1768,6 @@ int main(int ac,char **av)
 			case 's' :
 				if ((sectsize = atoi(optarg)) <= 0)
 					pr(FATAL,"sector size must be >= 0");
-				break;
-			case 't' :
-				if (! g_mod_addexternal(optarg))
-					return (EXIT_FAILURE);
 				break;
 			case 'v' :
 				f_verbose++; break;

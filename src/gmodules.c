@@ -18,7 +18,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <dlfcn.h>
 #include "gpart.h"
 
 
@@ -164,39 +163,4 @@ void g_mod_addinternals()
 	GMODINS(s86dl);
 	GMODINS(hmlvm);
 	GMODINS(xfs);
-}
-
-
-
-int g_mod_addexternal(char *name)
-{
-	g_module	*m;
-	char		buf[FILENAME_MAX];
-
-	/*
-	 * external modules are named 'gm_' name '.so', and will
-	 * be searched in the standard ld.so library directories
-	 * or those explicitly given by LD_LIBRARY_PATH.
-	 */
-
-	snprintf(buf,FILENAME_MAX-1,"gm_%s.so",name);
-	buf[FILENAME_MAX-1] = 0;
-
-	m = g_mod_lookup(GM_INSERT,name);
-	if (m->m_hd)
-		dlclose(m->m_hd);
-
-	if ((m->m_hd = dlopen(buf,RTLD_NOW)) == 0)
-		pr(FATAL,(char *)dlerror());
-
-	snprintf(buf,FILENAME_MAX-1,"%s_init",name);
-	m->m_init = (int (*)())dlsym(m->m_hd,buf);
-	snprintf(buf,FILENAME_MAX-1,"%s_term",name);
-	m->m_term = (int (*)())dlsym(m->m_hd,buf);
-	snprintf(buf,FILENAME_MAX-1,"%s_gfun",name);
-	m->m_gfun = (int (*)())dlsym(m->m_hd,buf);
-	if ((m->m_gfun == 0))
-		pr(FATAL,"module %s: missing vital functions",name);
-
-	return (1);
 }

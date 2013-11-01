@@ -48,7 +48,7 @@ typedef struct g_mod
 void g_mod_list(), g_mod_delete(g_module *), g_mod_deleteall();
 g_module *g_mod_head(), *g_mod_lookup(int,char *);
 void g_mod_addinternals();
-int g_mod_count(), g_mod_addexternal(char *);
+int g_mod_count();
 g_module *g_mod_setweight(char *,float);
 
 
