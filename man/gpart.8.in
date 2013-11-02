@@ -328,10 +328,6 @@ tries to find out the sector size but may fail in
 doing so. Probed sector sizes are 2^i, i=9..14
 (512 to 16384 bytes). The default medium sector
 size is 512 bytes.
-.IP "-t module name"
-Plug in another guessing module. The module to
-be dynamically linked in must be a shared object
-file named "gm_<modname>.so".
 .IP -V
 Show version number.
 .IP -v

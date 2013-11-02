@@ -46,13 +46,9 @@
 
 
 
- - External guessing modules ---------------------------------------------
+ - Guessing modules ------------------------------------------------------
 
-   gpart allows external partition type guessing modules to be
-   added dynamically. An external module of type "xxx" must be
-   compiled into a shared object file called "gm_xxx.so".
-
-   External modules must provide three functions callable from
+   Each guessing module must provide three functions callabble from
    gpart:
 
       int xxx_init(disk_desc *d,g_module *m)
@@ -88,19 +84,6 @@
          system is clean/was properly unmounted. On the other
          hand too much tolerance leads to misguided guesses,
          so a golden middle way must be found.
-
-   To create a shared object file from C source, compile the
-   module via
-
-      gcc -Wall -fPIC -shared gm_xxx.c -o gm_xxx.so
-
-   Then install the shared object in a directory searched by
-   the dynamic linker, or set LD_LIBRARY_PATH accordingly.
-   The new external module can then be included by calling
-   gpart like
-
-      gpart -t xxx <other options>
-
 
 
  - Output explanation ----------------------------------------------------
