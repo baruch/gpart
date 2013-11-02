@@ -141,7 +141,7 @@ void g_mod_addinternals()
 #define GMODINS(mod)	\
 	do { \
 		m = g_mod_lookup(GM_INSERT,#mod); \
-		if (!m) {		\
+		if (m) {		\
 			m->m_init=mod##_init; \
 			m->m_term=mod##_term; \
 			m->m_gfun=mod##_gfun; \
