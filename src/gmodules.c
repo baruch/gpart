@@ -153,17 +153,7 @@ void g_mod_addinternals()
 	 * is somehow important.
 	 */
 
-	GMODINS(bsddl);
-	GMODINS(lswap);
-	GMODINS(qnx4);
-	GMODINS(reiserfs);
-	GMODINS(ntfs);
-	GMODINS(hpfs);
-	GMODINS(minix);
-	GMODINS(beos);
-	GMODINS(ext2);
-	GMODINS(fat);
-	GMODINS(s86dl);
-	GMODINS(hmlvm);
-	GMODINS(xfs);
+#define G_MODULE(mod) GMODINS(mod)
+G_MODULES
+#undef G_MODULE
 }

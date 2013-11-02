@@ -53,18 +53,28 @@ g_module *g_mod_setweight(char *,float);
 
 
 /*
- * preloaded guessing modules
+ * preloaded guessing modules, order is important as it is also the order of registering and guessing
  */
 
-#define GMODDECL(mod)	int mod##_init(disk_desc *,g_module *),	\
+#define G_MODULES \
+	G_MODULE(bsddl) \
+	G_MODULE(lswap) \
+	G_MODULE(qnx4) \
+	G_MODULE(reiserfs) \
+	G_MODULE(ntfs) \
+	G_MODULE(hpfs) \
+	G_MODULE(minix) \
+	G_MODULE(beos) \
+	G_MODULE(ext2) \
+	G_MODULE(fat) \
+	G_MODULE(s86dl) \
+	G_MODULE(hmlvm) \
+	G_MODULE(xfs)
+
+#define G_MODULE(mod)	int mod##_init(disk_desc *,g_module *),	\
 			mod##_term(disk_desc *),		\
-			mod##_gfun(disk_desc *,g_module *)
-
-GMODDECL(bsddl); GMODDECL(ext2); GMODDECL(fat);
-GMODDECL(hpfs); GMODDECL(lswap); GMODDECL(ntfs);
-GMODDECL(s86dl); GMODDECL(minix); GMODDECL(reiserfs);
-GMODDECL(hmlvm); GMODDECL(qnx4); GMODDECL(beos);
-GMODDECL(xfs);
-
+			mod##_gfun(disk_desc *,g_module *);
+G_MODULES
+#undef G_MODULE
 
 #endif /* _GMODULES_H */
