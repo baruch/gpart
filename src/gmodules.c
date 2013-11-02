@@ -56,7 +56,6 @@ void g_mod_delete(g_module *m)
 {
 	if (m)
 	{
-		if (m->m_hd) dlclose(m->m_hd);
 		if (m->m_name) free((void *)m->m_name);
 		free(m);
 		g_count--;
@@ -131,8 +130,6 @@ g_module *g_mod_lookup(int how,char *name)
 	return (m);
 }
 
-
-
 /*
  * preloaded modules
  */
@@ -141,9 +138,15 @@ void g_mod_addinternals()
 {
 	g_module	*m;
 
-#define GMODINS(mod)	if(!(m = g_mod_lookup(GM_INSERT,#mod))->m_hd){		\
-			m->m_init=mod##_init; m->m_term=mod##_term;	\
-			m->m_gfun=mod##_gfun; }
+#define GMODINS(mod)	\
+	do { \
+		m = g_mod_lookup(GM_INSERT,#mod); \
+		if (!m) {		\
+			m->m_init=mod##_init; \
+			m->m_term=mod##_term; \
+			m->m_gfun=mod##_gfun; \
+		} \
+	} while (0);
 
 	/*
 	 * If no weights are given on the command line, the order

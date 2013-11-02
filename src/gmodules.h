@@ -33,7 +33,6 @@ typedef struct g_mod
 	int		(*m_gfun)(disk_desc *,struct g_mod *);
 	float		m_guess;
 	float		m_weight;	/* probability weight */
-	void		*m_hd;		/* dlopen() descriptor */
 	dos_part_entry	m_part;		/* a guessed partition entry */
 	long		m_align;	/* alignment of partition */
 	struct g_mod	*m_next;
