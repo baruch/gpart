@@ -1,3 +1,6 @@
+v0.2.1
+  - Fix distribution issues that prevented builds of dist tarball
+
 v0.2
   - Import some FreeBSD patches
   - Default scan by sector size to handle new 4k alignment method
