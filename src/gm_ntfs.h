@@ -15,7 +15,7 @@
  */
 
 #include <stdint.h>
-#include <asm/byteorder.h>
+#include <endian.h>
 
 #ifndef _GM_NTFS_H
 #define _GM_NTFS_H
