@@ -9,10 +9,10 @@ gpart \- guess PC-type hard disk partitions
 [options]
 .I device
 
-Options: [-b <backup MBR>][-C c,h,s][-c][-d][-E][-e][-f]
-[-g][-h][-i][-K <last-sector>][-k <# of sectors>] [-L]
-[-l <log file>][-n <increment>] [-q][-s <sector-size>]
-[-t <module-name>][-V][-v] [-W <device>][-w <module-name,
+Options: [\-b <backup MBR>][\-C c,h,s][\-c][\-d][\-E][\-e][\-f]
+[\-g][\-h][\-i][\-K <last-sector>][\-k <# of sectors>] [\-L]
+[\-l <log file>][\-n <increment>] [\-q][\-s <sector-size>]
+[\-t <module-name>][\-V][\-v] [\-W <device>][\-w <module-name,
 weight>]
 .SH DESCRIPTION
 .B gpart
@@ -187,7 +187,7 @@ geometry. For instance if a disk with the geometry
 should be called like
 
 .RS
-gpart -C 1028,255,63 <other options> <device>
+gpart \-C 1028,255,63 <other options> <device>
 .RE
 
 .SH PRECAUTIONS
@@ -223,7 +223,7 @@ should be stored in a safe place like a floppy disk.
 If the guessed primary partition table seems consistent
 and should be written (see the
 .I
--W
+\-W
 option) backup the current MBR into the specified file.
 .IP "-C c,h,s"
 Set the disk geometry (cylinders, heads, sectors) for
@@ -360,7 +360,7 @@ are allowed.
 
 
 .PP
-Default settings are "-n h".
+Default settings are "\-n h".
 
 .SH EXAMPLES
 \-\ To scan the first IDE hard disk under Linux using default
@@ -374,7 +374,7 @@ gpart /dev/hda
 drive without starting the scan loop in FreeBSD type
 
 .RS
-gpart -vvd /dev/wd2
+gpart \-vvd /dev/wd2
 .RE
 .RE
 
@@ -386,7 +386,7 @@ in a file called /boot/boot.<major/minor>. To list
 the partitions contained in such a file type e.g.
 
 .RS
-gpart -vdg /boot/boot.0300
+gpart \-vdg /boot/boot.0300
 .RE
 
 If the partition table contains an extended partition,
@@ -405,7 +405,7 @@ can be told to start the scan directly from sector one
 of the disk, using the sector-wise scan mode:
 
 .RS
-gpart -k 1 -n s /dev/hdb
+gpart \-k 1 \-n s /dev/hdb
 .RE
 
 \-\ Suppose
@@ -416,7 +416,7 @@ made the first module to be probed and given a
 weight higher than the usual weight of 1.0:
 
 .RS
-gpart -w ntfs,1.5 /dev/hdb
+gpart \-w ntfs,1.5 /dev/hdb
 .RE
 
 To list the available modules and their weights use
@@ -430,7 +430,7 @@ at least thrice, the primary partition table can
 be written back to the device this way:
 
 .RS
-gpart -W /dev/sdc /dev/sdc
+gpart \-W /dev/sdc /dev/sdc
 .RE
 
 This of course may be extremely dangerous to your health
@@ -441,7 +441,7 @@ steps of 63 sectors. To perform the scan on every second
 head while skipping the first 1008 sectors type
 
 .RS
-gpart -k 1008 -n 126 /dev/sda
+gpart \-k 1008 \-n 126 /dev/sda
 .RE
 
 \-\ If you want to see how easily
@@ -451,7 +451,7 @@ are on a disk, search the whole disk really sector by
 sector, writing all output to a logfile:
 
 .RS
-gpart -vvfn s -ql /tmp/gpart.log /dev/sd2 &
+gpart \-vvfn s \-ql /tmp/gpart.log /dev/sd2 &
 .RE
 
 Usually
