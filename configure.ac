@@ -11,10 +11,6 @@ AC_CONFIG_HEADERS([config.h])
 AC_PROG_CC
 AC_PROG_INSTALL
 
-# Checks for libraries.
-# FIXME: Replace `main' with a function in `-ldl':
-AC_CHECK_LIB([dl], [main])
-
 # Checks for header files.
 AC_CHECK_HEADERS([fcntl.h stdint.h stdlib.h string.h sys/ioctl.h sys/mount.h unistd.h])
 
