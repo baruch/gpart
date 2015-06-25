@@ -1,6 +1,6 @@
+# gpart
 
-   gpart README
-
+[![Build Status](https://travis-ci.org/baruch/gpart.svg)](https://travis-ci.org/baruch/gpart)
 
    Gpart is a small tool which tries to guess what partitions
    are on a PC type harddisk in case the primary partition table
@@ -15,14 +15,11 @@
    Consult the manual page for command line options and usage.
 
 
-
- - Installation ----------------------------------------------------------
+## Installation
 
    See file INSTALL.
 
-
-
- - Currently recognized partitions/filesystems types ---------------------
+## Currently recognized partitions/filesystems types
 
    Modname  Typ   Description
    fat      0x01  "Primary DOS with 12 bit FAT"
@@ -46,7 +43,7 @@
 
 
 
- - Guessing modules ------------------------------------------------------
+## Guessing modules
 
    Each guessing module must provide three functions callabble from
    gpart:
@@ -86,7 +83,7 @@
          so a golden middle way must be found.
 
 
- - Output explanation ----------------------------------------------------
+## Output explanation
 
    Here is a sample 'gpart -v' run on my first IDE hard disk
    (comments in brackets):
@@ -208,6 +205,6 @@ Primary partition(4)
    option) which partition gets the active (bootable) one.
 ]
 
-
+## Author
 
    gpart README, Aug 1999, Michail Brzitwa <mb@ichabod.han.de>
