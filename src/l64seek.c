@@ -14,6 +14,7 @@
  *
  */
 
+#include "config.h" /* for large file support */
 #include "l64seek.h"
 
 

@@ -28,6 +28,9 @@ AC_TYPE_UINT8_T
 AC_FUNC_MALLOC
 AC_CHECK_FUNCS([getpagesize memset strchr strdup strerror strtoul])
 
+# Configure system services.
+AC_SYS_LARGEFILE
+
 AC_CONFIG_FILES([Makefile
                  man/Makefile
                  src/Makefile
