@@ -2,22 +2,22 @@
 
 [![Build Status](https://travis-ci.org/baruch/gpart.svg)](https://travis-ci.org/baruch/gpart)
 
-   Gpart is a small tool which tries to guess what partitions
-   are on a PC type harddisk in case the primary partition table
-   was damaged.
+Gpart is a small tool which tries to guess what partitions
+are on a PC type harddisk in case the primary partition table
+was damaged.
 
-   Gpart works by scanning through the device (or file) given on
-   the command line on a sector basis. Each guessing module is
-   asked if it thinks a file system it knows about could start at
-   a given sector. Several file system guessing modules are built
-   in, others can be added dynamically.
+Gpart works by scanning through the device (or file) given on
+the command line on a sector basis. Each guessing module is
+asked if it thinks a file system it knows about could start at
+a given sector. Several file system guessing modules are built
+in, others can be added dynamically.
 
-   Consult the manual page for command line options and usage.
+Consult the manual page for command line options and usage.
 
 
 ## Installation
 
-   See file *INSTALL*.
+See file *INSTALL*.
 
 ## Currently recognized partitions/filesystems types
 
@@ -46,48 +46,51 @@
 
 ## Guessing modules
 
-   Each guessing module must provide three functions callabble from
-   gpart:
+Each guessing module must provide three functions callabble from
+gpart:
 
-     int xxx_init(disk_desc *d,g_module *m)
-   >    Initialisation function. Will be called before a scan.
-   >    It should return the minimum number of bytes it wants
-   >    to receive for a test. The module should set the
-   >    description of the filesystem/partition type it handles
-   >    in `g_module.m_desc`. If the filesystem/partition type
-   >    included a partition table like first sector (like the
-   >    \*BSD disklabels do), the flag `m_hasptbl` should be set.
-   >    Another flag is `m_notinext` which means the tested type
-   >    cannot reside in a logical partition.
+    int xxx_init(disk_desc *d,g_module *m)
 
-     int xxx_term(disk_desc *d)
-   >    Termination/cleanup function, called after the scanning
-   >    of the device has been done.
+>   Initialisation function. Will be called before a scan.
+>   It should return the minimum number of bytes it wants
+>   to receive for a test. The module should set the
+>   description of the filesystem/partition type it handles
+>   in `g_module.m_desc`. If the filesystem/partition type
+>   included a partition table like first sector (like the
+>   \*BSD disklabels do), the flag `m_hasptbl` should be set.
+>   Another flag is `m_notinext` which means the tested type
+>   cannot reside in a logical partition.
 
-     int xxx_gfun(disk_desc *d,g_module *m)
-   >    The actual guessing function, called from within the
-   >    scan loop. It should test the plausibility of the
-   >    given sectors, and return its guess in `m->m_guess` (a
-   >    probability between 0 and 1). See existing modules
-   >    for examples.
-   >
-   >    The given file descriptor `d->d_fd` can be used for seeking
-   >    and reading (see e.g. *gm_ext2.c* which tries to read
-   >    the first spare superblock). If a module is convinced
-   >    that it has found a filesystem/partition start it should
-   >    fill in the assumed begin and size of the partition.
-   >
-   >    The test performed should not be too pedantic, for
-   >    instance it should not be relied upon that the file-
-   >    system is clean/was properly unmounted. On the other
-   >    hand too much tolerance leads to misguided guesses,
-   >    so a golden middle way must be found.
+    int xxx_term(disk_desc *d)
+
+>   Termination/cleanup function, called after the scanning
+>   of the device has been done.
+
+    int xxx_gfun(disk_desc *d,g_module *m)
+
+>   The actual guessing function, called from within the
+>   scan loop. It should test the plausibility of the
+>   given sectors, and return its guess in `m->m_guess` (a
+>   probability between 0 and 1). See existing modules
+>   for examples.
+>
+>   The given file descriptor `d->d_fd` can be used for seeking
+>   and reading (see e.g. *gm_ext2.c* which tries to read
+>   the first spare superblock). If a module is convinced
+>   that it has found a filesystem/partition start it should
+>   fill in the assumed begin and size of the partition.
+>
+>   The test performed should not be too pedantic, for
+>   instance it should not be relied upon that the file-
+>   system is clean/was properly unmounted. On the other
+>   hand too much tolerance leads to misguided guesses,
+>   so a golden middle way must be found.
 
 
 ## Output explanation
 
-   Here is a sample 'gpart -v' run on my first IDE hard disk
-   (comments in brackets):
+Here is a sample 'gpart -v' run on my first IDE hard disk
+(comments in brackets):
 
 dev(/dev/hda) mss(512) chs(1232/255/63)(LBA) #s(19792080) size(9664mb)
 [
@@ -208,4 +211,4 @@ Primary partition(4)
 
 ## Author
 
-   gpart README, Aug 1999, Michail Brzitwa <mb@ichabod.han.de>
+gpart README, Aug 1999, Michail Brzitwa <mb@ichabod.han.de>
