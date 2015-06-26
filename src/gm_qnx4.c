@@ -22,8 +22,6 @@
 
 #include <stdio.h>
 
-static const char	rcsid[] = "$Id: gm_qnx4.c,v 1.1 2001/01/29 17:11:34 mb Exp mb $";
-
 
 int qnx4_init(disk_desc *d,g_module *m)
 {

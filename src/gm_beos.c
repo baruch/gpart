@@ -22,9 +22,6 @@
 
 #include <stdio.h>
 
-static const char	rcsid[] = "$Id: gm_beos.c,v 1.2 2001/02/07 18:08:08 mb Exp mb $";
-
-
 int beos_init(disk_desc *d,g_module *m)
 {
 	if ((d == 0) || (m == 0))

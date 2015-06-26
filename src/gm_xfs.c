@@ -18,8 +18,6 @@
 #include "gpart.h"
 #include "gm_xfs.h"
 
-static const char	rcsid[] = "$Id: gm_xfs.c,v 1.1 2001/02/07 18:08:08 mb Exp mb $";
-
 
 int xfs_init(disk_desc *d,g_module *m)
 {

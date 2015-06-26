@@ -22,8 +22,6 @@
 #include "gpart.h"
 #include "gm_hpfs.h"
 
-static const char	rcsid[] = "$Id: gm_hpfs.c,v 1.8 2001/02/07 18:08:08 mb Exp mb $";
-
 #define OS2SECTSIZE		512
 
 

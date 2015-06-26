@@ -17,8 +17,6 @@
 #include "gpart.h"
 #include "gm_s86dl.h"
 
-static const char	rcsid[] = "$Id: gm_s86dl.c,v 1.6 2001/02/07 18:08:08 mb Exp mb $";
-
 
 int s86dl_init(disk_desc *d,g_module *m)
 {

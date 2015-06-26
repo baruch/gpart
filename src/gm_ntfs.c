@@ -21,8 +21,6 @@
 #include "gpart.h"
 #include "gm_ntfs.h"
 
-static const char	rcsid[] = "$Id: gm_ntfs.c,v 1.6 2001/02/07 18:08:08 mb Exp mb $";
-
 #define NTFS_SECTSIZE	512
 
 int ntfs_init(disk_desc *d,g_module *m)

@@ -17,8 +17,6 @@
 #include "gpart.h"
 #include "gm_minix.h"
 
-static const char	rcsid[] = "$Id: gm_minix.c,v 1.5 2001/02/07 18:08:08 mb Exp mb $";
-
 
 int minix_init(disk_desc *d,g_module *m)
 {

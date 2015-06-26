@@ -27,8 +27,6 @@
 #include "gpart.h"
 #include "gm_ext2.h"
 
-static const char	rcsid[] = "$Id: gm_ext2.c,v 1.8 2001/02/07 18:08:08 mb Exp mb $";
-
 
 int ext2_init(disk_desc *d,g_module *m)
 {

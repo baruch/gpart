@@ -22,8 +22,6 @@
 #include "gpart.h"
 #include "gm_reiserfs.h"
 
-static const char	rcsid[] = "$Id: gm_reiserfs.c,v 1.5 2003/01/10 16:38:08 mb Exp mb $";
-
 
 int reiserfs_init(disk_desc *d,g_module *m)
 {

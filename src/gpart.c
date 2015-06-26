@@ -59,7 +59,6 @@
 #include "gpart.h"
 
 
-static const char	rcsid[] = "$Id: gpart.c,v 1.11 2001/02/07 18:08:08 mb Exp mb $";
 static const char	*gpart_version = PACKAGE_NAME " v" VERSION;
 
 

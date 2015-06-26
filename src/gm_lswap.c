@@ -19,7 +19,6 @@
 #include "gpart.h"
 
 
-static const char	rcsid[] = "$Id: gm_lswap.c,v 1.8 2001/02/07 18:08:08 mb Exp mb $";
 static char		*sigs[] = { "SWAP-SPACE", "SWAPSPACE2" };
 static int		pszs[] = { 4096, 8192 };
 static int		siglen = 10;
