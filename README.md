@@ -17,7 +17,7 @@
 
 ## Installation
 
-   See file INSTALL.
+   See file *INSTALL*.
 
 ## Currently recognized partitions/filesystems types
 
@@ -72,7 +72,7 @@
    >    for examples.
    >
    >    The given file descriptor `d->d_fd` can be used for seeking
-   >    and reading (see e.g. gm\_ext2.c which tries to read
+   >    and reading (see e.g. *gm_ext2.c* which tries to read
    >    the first spare superblock). If a module is convinced
    >    that it has found a filesystem/partition start it should
    >    fill in the assumed begin and size of the partition.
