@@ -106,9 +106,9 @@ Here is a sample `gpart -v` run on my first IDE hard disk
 
 >   `size`: the size of the partition in megabytes, number of
 >   sectors and the sector range.  
->   `chs`: the partition table chs range (`d`) and the real one.
->   If the number of cylinders is less than 1024 both are
->   identical.  
+>   `chs`: the partition table chs range (`d`) and the real one
+>   (`r`). If the number of cylinders is less than 1024, both
+>   are identical.  
 >   `hex`: the hexadecimal representation of the partition entry
 >   as found in the partition table.  
 
