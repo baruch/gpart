@@ -54,10 +54,10 @@
    >    It should return the minimum number of bytes it wants
    >    to receive for a test. The module should set the
    >    description of the filesystem/partition type it handles
-   >    in g_module.m_desc. If the filesystem/partition type
+   >    in `g_module.m_desc`. If the filesystem/partition type
    >    included a partition table like first sector (like the
-   >    *BSD disklabels do), the flag m_hasptbl should be set.
-   >    Another flag is m_notinext which means the tested type
+   >    \*BSD disklabels do), the flag `m_hasptbl` should be set.
+   >    Another flag is `m_notinext` which means the tested type
    >    cannot reside in a logical partition.
 
      int xxx_term(disk_desc *d)
@@ -67,12 +67,12 @@
      int xxx_gfun(disk_desc *d,g_module *m)
    >    The actual guessing function, called from within the
    >    scan loop. It should test the plausibility of the
-   >    given sectors, and return its guess in m->m_guess (a
+   >    given sectors, and return its guess in `m->m_guess` (a
    >    probability between 0 and 1). See existing modules
    >    for examples.
    >
-   >    The given file descriptor d->d_fd can be used for seeking
-   >    and reading (see e.g. gm_ext2.c which tries to read
+   >    The given file descriptor `d->d_fd` can be used for seeking
+   >    and reading (see e.g. gm\_ext2.c which tries to read
    >    the first spare superblock). If a module is convinced
    >    that it has found a filesystem/partition start it should
    >    fill in the assumed begin and size of the partition.
