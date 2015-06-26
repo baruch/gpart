@@ -3,8 +3,8 @@
 [![Build Status](https://travis-ci.org/baruch/gpart.svg)](https://travis-ci.org/baruch/gpart)
 
 Gpart is a small tool which tries to guess what partitions
-are on a PC type hard disk in case the primary partition table
-was damaged.
+are on a PC type, MBR-partitioned hard disk in case the
+primary partition table was damaged.
 
 Gpart works by scanning through the device (or file) given on
 the command line on a sector basis. Each guessing module is
