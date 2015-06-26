@@ -3,13 +3,13 @@
 [![Build Status](https://travis-ci.org/baruch/gpart.svg)](https://travis-ci.org/baruch/gpart)
 
 Gpart is a small tool which tries to guess what partitions
-are on a PC type harddisk in case the primary partition table
+are on a PC type hard disk in case the primary partition table
 was damaged.
 
 Gpart works by scanning through the device (or file) given on
 the command line on a sector basis. Each guessing module is
-asked if it thinks a file system it knows about could start at
-a given sector. Several file system guessing modules are built
+asked if it thinks a filesystem it knows about could start at
+a given sector. Several filesystem guessing modules are built
 in, others can be added dynamically.
 
 Consult the manual page for command line options and usage.
@@ -46,7 +46,7 @@ See file *INSTALL*.
 
 ## Guessing modules
 
-Each guessing module must provide three functions callabble from
+Each guessing module must provide three functions callable from
 gpart:
 
     int xxx_init(disk_desc *d,g_module *m)
@@ -140,7 +140,7 @@ Here is a sample `gpart -v` run on my first IDE hard disk
 >   identifier which can be both a Solaris disklabel or a
 >   Linux swap partition.
 >
->   When examing the hex values of the first primary partition
+>   When examining the hex values of the first primary partition
 >   it can be seen that they are identical to the values of the
 >   actual partition table (good guess) except for the first
 >   value (0x80 vs. 0x00). This entry denotes the partition
