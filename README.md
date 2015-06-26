@@ -10,7 +10,7 @@ Gpart works by scanning through the device (or file) given on
 the command line on a sector basis. Each guessing module is
 asked if it thinks a filesystem it knows about could start at
 a given sector. Several filesystem guessing modules are built
-in, others can be added dynamically.
+in.
 
 Consult the manual page for command line options and usage.
 
