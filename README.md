@@ -49,39 +49,39 @@
    Each guessing module must provide three functions callabble from
    gpart:
 
-      int xxx_init(disk_desc *d,g_module *m)
-         Initialisation function. Will be called before a scan.
-         It should return the minimum number of bytes it wants
-         to receive for a test. The module should set the
-         description of the filesystem/partition type it handles
-         in g_module.m_desc. If the filesystem/partition type
-         included a partition table like first sector (like the
-         *BSD disklabels do), the flag m_hasptbl should be set.
-         Another flag is m_notinext which means the tested type
-         cannot reside in a logical partition.
+     int xxx_init(disk_desc *d,g_module *m)
+   >    Initialisation function. Will be called before a scan.
+   >    It should return the minimum number of bytes it wants
+   >    to receive for a test. The module should set the
+   >    description of the filesystem/partition type it handles
+   >    in g_module.m_desc. If the filesystem/partition type
+   >    included a partition table like first sector (like the
+   >    *BSD disklabels do), the flag m_hasptbl should be set.
+   >    Another flag is m_notinext which means the tested type
+   >    cannot reside in a logical partition.
 
-      int xxx_term(disk_desc *d)
-         Termination/cleanup function, called after the scanning
-         of the device has been done.
+     int xxx_term(disk_desc *d)
+   >    Termination/cleanup function, called after the scanning
+   >    of the device has been done.
 
-      int xxx_gfun(disk_desc *d,g_module *m)
-         The actual guessing function, called from within the
-         scan loop. It should test the plausibility of the
-         given sectors, and return its guess in m->m_guess (a
-         probability between 0 and 1). See existing modules
-         for examples.
-
-         The given file descriptor d->d_fd can be used for seeking
-         and reading (see e.g. gm_ext2.c which tries to read
-         the first spare superblock). If a module is convinced
-         that it has found a filesystem/partition start it should
-         fill in the assumed begin and size of the partition.
-
-         The test performed should not be too pedantic, for
-         instance it should not be relied upon that the file-
-         system is clean/was properly unmounted. On the other
-         hand too much tolerance leads to misguided guesses,
-         so a golden middle way must be found.
+     int xxx_gfun(disk_desc *d,g_module *m)
+   >    The actual guessing function, called from within the
+   >    scan loop. It should test the plausibility of the
+   >    given sectors, and return its guess in m->m_guess (a
+   >    probability between 0 and 1). See existing modules
+   >    for examples.
+   >
+   >    The given file descriptor d->d_fd can be used for seeking
+   >    and reading (see e.g. gm_ext2.c which tries to read
+   >    the first spare superblock). If a module is convinced
+   >    that it has found a filesystem/partition start it should
+   >    fill in the assumed begin and size of the partition.
+   >
+   >    The test performed should not be too pedantic, for
+   >    instance it should not be relied upon that the file-
+   >    system is clean/was properly unmounted. On the other
+   >    hand too much tolerance leads to misguided guesses,
+   >    so a golden middle way must be found.
 
 
 ## Output explanation
