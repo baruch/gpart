@@ -58,12 +58,12 @@ int fat_gfun(disk_desc *d,g_module *m)
 		 */
 
 		pt->p_start = d->d_nsb;
-		nsecs = le16(*(unsigned short *)sb->sectors);
+		nsecs = le16(sb->sectors);
 		if (nsecs == 0)
 			nsecs = le32(sb->total_sect);
 		if (nsecs == 0)
 			return (1);
-		sectsize = le16(*(unsigned short *)sb->sector_size);
+		sectsize = le16(sb->sector_size);
 		if ((d->d_sbuf[0x39] == '1') && (d->d_sbuf[0x3a] == '2'))
 			fat12 = 1;
 		if (sb->fat_length == 0)

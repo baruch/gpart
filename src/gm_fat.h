@@ -39,12 +39,12 @@ struct fat_boot_sector {
 	__s8	ignored[3];	/* Boot strap short or near jump */
 	__s8	system_id[8];	/* Name - can be used to special case
 				   partition manager volumes */
-	__u8	sector_size[2];	/* bytes per logical sector */
+	__u16	sector_size;	/* bytes per logical sector */
 	__u8	cluster_size;	/* sectors/cluster */
 	__u16	reserved;	/* reserved sectors */
 	__u8	fats;		/* number of FATs */
 	__u8	dir_entries[2];	/* root directory entries */
-	__u8	sectors[2];	/* number of sectors */
+	__u16	sectors;	/* number of sectors */
 	__u8	media;		/* media code (unused) */
 	__u16	fat_length;	/* sectors/FAT */
 	__u16	secs_track;	/* sectors per track */
