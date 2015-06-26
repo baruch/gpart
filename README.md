@@ -21,25 +21,26 @@
 
 ## Currently recognized partitions/filesystems types
 
-   Modname  Typ   Description
-   fat      0x01  "Primary DOS with 12 bit FAT"
-    	    0x04  "Primary DOS with 16 bit FAT (<= 32MB)"
-            0x06  "Primary 'big' DOS (> 32MB)"
-            0x0B  "DOS or Windows 95 with 32 bit FAT"
-            0x0C  "DOS or Windows 95 with 32 bit FAT, LBA"
-   ntfs     0x07  "OS/2 HPFS, NTFS, QNX or Advanced UNIX"
-   hpfs     0x07  "OS/2 HPFS, NTFS, QNX or Advanced UNIX"
-   ext2     0x83  "Linux ext2 filesystem"
-   lswap    0x82  "Linux swap"
-   bsddl    0xA5  "FreeBSD/NetBSD/386BSD"
-   s86dl    0x82  "Solaris/x86 disklabel"
-   minix    0x80  "Minix V1"
-            0x81  "Minix V2"
-   reiserfs 0x83  "ReiserFS filesystem"
-   hmlvm    0xFE  "Linux LVM physical volumes"
-   qnx4     0x4F  "QNX 4.x"
-   beos     0xEB  "BeOS fs"
-   xfs      0x83  "SGI XFS filesystem"
+   Modname  | Typ  | Description
+   :--------|:----:|:------------
+   fat      | 0x01 | Primary DOS with 12 bit FAT
+            | 0x04 | Primary DOS with 16 bit FAT (<= 32MB)
+            | 0x06 | Primary 'big' DOS (> 32MB)
+            | 0x0B | DOS or Windows 95 with 32 bit FAT
+            | 0x0C | DOS or Windows 95 with 32 bit FAT, LBA
+   ntfs     | 0x07 | OS/2 HPFS, NTFS, QNX or Advanced UNIX
+   hpfs     | 0x07 | OS/2 HPFS, NTFS, QNX or Advanced UNIX
+   ext2     | 0x83 | Linux ext2 filesystem
+   lswap    | 0x82 | Linux swap
+   bsddl    | 0xA5 | FreeBSD/NetBSD/386BSD
+   s86dl    | 0x82 | Solaris/x86 disklabel
+   minix    | 0x80 | Minix V1
+            | 0x81 | Minix V2
+   reiserfs | 0x83 | ReiserFS filesystem
+   hmlvm    | 0xFE | Linux LVM physical volumes
+   qnx4     | 0x4F | QNX 4.x
+   beos     | 0xEB | BeOS fs
+   xfs      | 0x83 | SGI XFS filesystem
 
 
 
