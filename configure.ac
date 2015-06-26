@@ -3,7 +3,7 @@
 
 AC_PREREQ([2.64])
 AC_INIT(gpart, 0.2.3-dev, https://github.com/baruch/gpart/issues)
-AM_INIT_AUTOMAKE([1.14])
+AM_INIT_AUTOMAKE([1.11])
 AC_CONFIG_SRCDIR([src/gpart.c])
 AC_CONFIG_HEADERS([config.h])
 
