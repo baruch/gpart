@@ -42,7 +42,7 @@ struct hpfs_boot_block
 {
   unsigned char jmp[3];
   unsigned char oem_id[8];
-  unsigned char bytes_per_sector[2];	/* 512 */
+  unsigned short bytes_per_sector;	/* 512 */
   unsigned char sectors_per_cluster;
   unsigned char n_reserved_sectors[2];
   unsigned char n_fats;

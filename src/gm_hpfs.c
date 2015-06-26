@@ -56,7 +56,7 @@ int hpfs_gfun(disk_desc *d,g_module *m)
 	if (	(bb->sig_28h == 0x28) &&
 		(strncmp((char *)bb->sig_hpfs,"HPFS    ",8) == 0) &&
 		(bb->magic == le16(0xaa55)) &&
-		(*(unsigned short *)bb->bytes_per_sector == le16(OS2SECTSIZE)))
+		(bb->bytes_per_sector == le16(OS2SECTSIZE)))
 	{
 		/*
 		 * looks like a hpfs boot sector. Test hpfs superblock
