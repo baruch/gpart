@@ -69,6 +69,7 @@ g_module *g_mod_setweight(char *,float);
 	G_MODULE(fat) \
 	G_MODULE(s86dl) \
 	G_MODULE(hmlvm) \
+	G_MODULE(lvm2) \
 	G_MODULE(xfs)
 
 #define G_MODULE(mod)	int mod##_init(disk_desc *,g_module *),	\
