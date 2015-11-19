@@ -954,12 +954,13 @@ scanloop:
 	while ((rd = bread(d->d_fd, d->d_sbuf, d->d_ssize, nsecs)) == bsize) {
 		int mod, have_ext = 0;
 		g_module *bg;
-		s64_t sz, ofs;
+		s64_t sz, ofs, fpos;
 
 		d->d_nsb += incr;
 		noffset = 0;
 		ofs = d->d_nsb;
 		s2mb(d, ofs);
+		fpos = d->d_nsb * d->d_ssize + bsize;
 		if (maxsec && (d->d_nsb > maxsec))
 			break;
 
@@ -980,16 +981,14 @@ scanloop:
 			/*
 			 * because a gmodule is allowed to seek on
 			 * d->d_fd the current file position must be
-			 * saved.
+			 * restored after calling it.
 			 */
 
 			memset(&m->m_part, 0, sizeof(dos_part_entry));
 			m->m_guess = GM_NO;
-			l64opush(d->d_fd);
 			if ((*m->m_gfun)(d, m) && (m->m_guess * m->m_weight >= GM_PERHAPS))
 				guesses[mod++] = m;
-			if ((sz = l64opop(d->d_fd)) != l64tell(d->d_fd))
-				l64seek(d->d_fd, sz, SEEK_SET);
+			l64seek(d->d_fd, fpos, SEEK_SET);
 		}
 
 		/*
