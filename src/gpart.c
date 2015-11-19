@@ -891,6 +891,10 @@ static void do_guess_loop(disk_desc *d)
 	if ((d->d_fd = open(d->d_dev, O_RDONLY)) == -1)
 		pr(FATAL, EM_OPENFAIL, d->d_dev, strerror(errno));
 
+#if HAVE_POSIX_FADVISE
+	posix_fadvise(d->d_fd, 0, 0, POSIX_FADV_SEQUENTIAL);
+	posix_fadvise(d->d_fd, 0, 0, POSIX_FADV_WILLNEED);
+#endif /* HAVE_POSIX_FADVISE */
 	/*
 	 * initialize modules. Each should return the minimum
 	 * size in bytes it wants to receive for a test.

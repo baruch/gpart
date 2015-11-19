@@ -26,7 +26,7 @@ AC_TYPE_UINT8_T
 
 # Checks for library functions.
 AC_FUNC_MALLOC
-AC_CHECK_FUNCS([getpagesize memset strchr strdup strerror strtoul])
+AC_CHECK_FUNCS([getpagesize memset strchr strdup strerror strtoul posix_fadvise])
 
 # Configure system services.
 AC_SYS_LARGEFILE
