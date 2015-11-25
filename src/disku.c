@@ -35,6 +35,16 @@
 
 #include <unistd.h>
 
+static void geometry_from_num_sectors(struct disk_geom *g, uint64_t nsects)
+{
+	const uint64_t lba = nsects - 1;
+
+	g->d_h = (lba / 63) % 255;
+	g->d_s = lba % 63 + 1;
+	g->d_c = lba / (255 * 63);
+	g->d_nsecs = nsects;
+}
+
 #if defined(__linux__)
 static void os_disk_geometry(disk_desc *d, struct disk_geom *g)
 {
@@ -51,8 +61,12 @@ static void os_disk_geometry(disk_desc *d, struct disk_geom *g)
 #ifdef BLKGETSIZE
 	if (ioctl(d->d_fd, BLKGETSIZE, &nsects) == -1)
 		pr(FATAL, EM_IOCTLFAILED, "BLKGETSIZE", strerror(errno));
-	else
-		g->d_c = nsects / (hg.heads * hg.sectors);
+	else {
+		if (hg.heads && hg.sectors)
+			g->d_c = nsects / (hg.heads * hg.sectors);
+		else
+			geometry_from_num_sectors(g, nsects);
+	}
 #endif
 }
 #elif defined(__FreeBSD__)
@@ -94,27 +108,19 @@ struct disk_geom *disk_geometry(disk_desc *d)
 {
 	static struct disk_geom g;
 	uint64_t nsects;
+	struct stat st;
+	int ret;
 
 	memset(&g, 0, sizeof(g));
 
-	struct stat st;
-	int ret;
-	uint64_t lba;
 	ret = stat(d->d_dev, &st);
-	if (ret == 0) {
+	if (ret == 0 && S_ISREG(st.st_mode)) {
 		// We have something, we'll use it for a first fill of the data
 		nsects = st.st_size / 512;
 		if (nsects == 0)
 			pr(FATAL, EM_FATALERROR, "Not a block device image file");
-		lba = nsects - 1;
-		g.d_h = (lba / 63) % 255;
-		g.d_s = lba % 63 + 1;
-		g.d_c = lba / (255 * 63);
-		g.d_nsecs = nsects;
-
-		// If it is a regular file there is no reason to try anything else
-		if (S_ISREG(st.st_mode))
-			return (&g);
+		geometry_from_num_sectors(&g, nsects);
+		return (&g);
 	}
 
 	os_disk_geometry(d, &g);
