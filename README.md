@@ -41,7 +41,8 @@ See file *INSTALL*.
    qnx4     | 0x4F | QNX 4.x
    beos     | 0xEB | BeOS fs
    xfs      | 0x83 | SGI XFS filesystem
-
+   btrfs    | 0x83 | BtrFS
+   LVM2     | 0x8E | LVM2
 
 
 ## Guessing modules
