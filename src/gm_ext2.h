@@ -1,6 +1,6 @@
 /*
  * gm_ext2.h -- gpart ext2 guessing module header
- * 
+ *
  * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
  * Guess PC-type hard disk partitions.
  *
@@ -10,7 +10,7 @@
  * option) any later version.
  *
  * Created:   04.01.1999 <mb@ichabod.han.de>
- * Modified:  
+ * Modified:
  *
  */
 

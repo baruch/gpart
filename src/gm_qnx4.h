@@ -1,6 +1,6 @@
 /*
  * gm_qnx4.h -- gpart qnx4 guessing module header
- * 
+ *
  * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
  * Guess PC-type hard disk partitions.
  *
@@ -10,7 +10,7 @@
  * option) any later version.
  *
  * Created:   04.01.2001 <mb@ichabod.han.de>
- * Modified:  
+ * Modified:
  *
  */
 
@@ -87,6 +87,5 @@ struct qnx4_super_block {
 	struct qnx4_inode_entry Boot;
 	struct qnx4_inode_entry AltBoot;
 };
-
 
 #endif /* _GM_QNX4_H */

@@ -1,4 +1,4 @@
-/*      
+/*
  * gm_hmlvm.c -- gpart Linux LVM physical volume guessing module
  *
  * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
@@ -20,8 +20,7 @@
 #include "gpart.h"
 #include "gm_hmlvm.h"
 
-
-int hmlvm_init(disk_desc *d,g_module *m)
+int hmlvm_init(disk_desc *d, g_module *m)
 {
 	if ((d == 0) || (m == 0))
 		return (0);
@@ -30,27 +29,18 @@ int hmlvm_init(disk_desc *d,g_module *m)
 	return (LVM_PV_DISK_BASE + LVM_PV_DISK_SIZE);
 }
 
+int hmlvm_term(disk_desc *d) { return (1); }
 
-
-int hmlvm_term(disk_desc *d)
+int hmlvm_gfun(disk_desc *d, g_module *m)
 {
-	return (1);
-}
-
-
-
-int hmlvm_gfun(disk_desc *d,g_module *m)
-{
-	pv_disk_t		*pv;
-	dos_part_entry		*pt = &m->m_part;
-	unsigned int		size;
-	s64_t			s;
+	pv_disk_t *pv;
+	dos_part_entry *pt = &m->m_part;
+	unsigned int size;
+	s64_t s;
 
 	m->m_guess = GM_NO;
 	pv = (pv_disk_t *)&d->d_sbuf[LVM_PV_DISK_BASE];
-	if ((strncmp((char *)pv->id,LVM_ID,sizeof(pv->id)) == 0) &&
-	    ((pv->version == 1) || (pv->version == 2)))
-	{
+	if ((strncmp((char *)pv->id, LVM_ID, sizeof(pv->id)) == 0) && ((pv->version == 1) || (pv->version == 2))) {
 		/*
 		 * looks like a physical volume header. Do the usual
 		 * consistency checks.
@@ -68,12 +58,10 @@ int hmlvm_gfun(disk_desc *d,g_module *m)
 			return (1);
 
 		size = pv->pe_size / LVM_MIN_PE_SIZE * LVM_MIN_PE_SIZE;
-		if ((pv->pe_size != size) ||
-		    (pv->pe_size < LVM_MIN_PE_SIZE) ||
-		    (pv->pe_size > LVM_MAX_PE_SIZE))
+		if ((pv->pe_size != size) || (pv->pe_size < LVM_MIN_PE_SIZE) || (pv->pe_size > LVM_MAX_PE_SIZE))
 			return (1);
 
-		if (pv->pe_total > ( pv->pe_on_disk.size / sizeof ( disk_pe_t)))
+		if (pv->pe_total > (pv->pe_on_disk.size / sizeof(disk_pe_t)))
 			return (1);
 		if (pv->pe_allocated > pv->pe_total)
 			return (1);
@@ -84,7 +72,9 @@ int hmlvm_gfun(disk_desc *d,g_module *m)
 
 		m->m_guess = GM_YES;
 		pt->p_start = d->d_nsb;
-		s = pv->pv_size; s *= 512; s /= d->d_ssize;
+		s = pv->pv_size;
+		s *= 512;
+		s /= d->d_ssize;
 		pt->p_size = s;
 		pt->p_typ = 0x8E;
 	}

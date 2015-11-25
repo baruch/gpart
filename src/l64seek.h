@@ -31,7 +31,7 @@ typedef loff_t off64_t;
 typedef off64_t s64_t;
 
 off64_t l64seek(int fd, off64_t offset, int whence);
-#define l64tell(fd) l64seek(fd,0,SEEK_CUR)
+#define l64tell(fd) l64seek(fd, 0, SEEK_CUR)
 int l64opush(int);
 s64_t l64opop(int);
 

@@ -1,4 +1,4 @@
-/*      
+/*
  * gm_xfs.c -- gpart SGI xfs guessing module
  *
  * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
@@ -18,8 +18,7 @@
 #include "gpart.h"
 #include "gm_xfs.h"
 
-
-int xfs_init(disk_desc *d,g_module *m)
+int xfs_init(disk_desc *d, g_module *m)
 {
 	if ((d == 0) || (m == 0))
 		return (0);
@@ -28,19 +27,12 @@ int xfs_init(disk_desc *d,g_module *m)
 	return (512);
 }
 
+int xfs_term(disk_desc *d) { return (1); }
 
-
-int xfs_term(disk_desc *d)
+int xfs_gfun(disk_desc *d, g_module *m)
 {
-	return (1);
-}
-
-
-
-int xfs_gfun(disk_desc *d,g_module *m)
-{
-	xfs_sb_t		*sb;
-	s64_t			size;
+	xfs_sb_t *sb;
+	s64_t size;
 
 	m->m_guess = GM_NO;
 	sb = (xfs_sb_t *)d->d_sbuf;
@@ -58,8 +50,7 @@ int xfs_gfun(disk_desc *d,g_module *m)
 	if ((sb->sb_imax_pct > 100) || (sb->sb_sectsize <= 0))
 		return (1);
 
-	if ((be16(sb->sb_inodesize) < XFS_DINODE_MIN_SIZE) ||
-	    (be16(sb->sb_inodesize) > XFS_DINODE_MAX_SIZE))
+	if ((be16(sb->sb_inodesize) < XFS_DINODE_MIN_SIZE) || (be16(sb->sb_inodesize) > XFS_DINODE_MAX_SIZE))
 		return (1);
 
 	if (be32(sb->sb_blocksize) != 1 << sb->sb_blocklog)

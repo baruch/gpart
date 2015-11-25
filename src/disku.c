@@ -15,7 +15,6 @@
  *
  */
 
-
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
@@ -36,7 +35,6 @@
 
 #include <unistd.h>
 
-
 /*
  * get disk geometry. The medium is opened for reading,
  * descriptor in d_fd.
@@ -44,26 +42,24 @@
 
 struct disk_geom *disk_geometry(disk_desc *d)
 {
-	static struct disk_geom	g;
-	uint64_t			nsects;
+	static struct disk_geom g;
+	uint64_t nsects;
 
 	memset(&g, 0, sizeof(g));
 
 #if defined(__linux__)
-	struct hd_geometry	hg;
+	struct hd_geometry hg;
 #endif
 #if defined(__FreeBSD__)
-	struct disklabel	dl;
+	struct disklabel dl;
 #endif
 
 	struct stat st;
 	int ret;
 	uint64_t lba;
 	ret = stat(d->d_dev, &st);
-	if (ret == 0)
-	{
-		if (S_ISREG(st.st_mode))
-		{
+	if (ret == 0) {
+		if (S_ISREG(st.st_mode)) {
 			nsects = st.st_size / 512;
 			if (nsects == 0)
 				pr(FATAL, EM_FATALERROR, "Not a block device image file");
@@ -77,11 +73,11 @@ struct disk_geom *disk_geometry(disk_desc *d)
 	}
 
 #if defined(__linux__)
-	if (ioctl(d->d_fd,HDIO_GETGEO,&hg) == -1)
-		pr(FATAL,EM_IOCTLFAILED,"HDIO_GETGEO",strerror(errno));
+	if (ioctl(d->d_fd, HDIO_GETGEO, &hg) == -1)
+		pr(FATAL, EM_IOCTLFAILED, "HDIO_GETGEO", strerror(errno));
 #ifdef BLKGETSIZE
-	if (ioctl(d->d_fd,BLKGETSIZE,&nsects) == -1)
-		pr(FATAL,EM_IOCTLFAILED,"BLKGETSIZE",strerror(errno));
+	if (ioctl(d->d_fd, BLKGETSIZE, &nsects) == -1)
+		pr(FATAL, EM_IOCTLFAILED, "BLKGETSIZE", strerror(errno));
 	g.d_nsecs = nsects;
 	g.d_c = nsects / (hg.heads * hg.sectors);
 #else
@@ -93,22 +89,22 @@ struct disk_geom *disk_geometry(disk_desc *d)
 #endif
 
 #if defined(__FreeBSD__)
-	struct disklabel	loclab;
-	u_int    u;
-	off_t	 o; /* total disk size */
+	struct disklabel loclab;
+	u_int u;
+	off_t o; /* total disk size */
 
 	if (ioctl(d->d_fd, DIOCGFWSECTORS, &u) == 0)
 		g.d_s = u;
 	else
 		pr(FATAL, EM_IOCTLFAILED, "DIOCGFWSECTORS", strerror(errno));
-		// loclab.d_nsectors = 63;
+	// loclab.d_nsectors = 63;
 	if (ioctl(d->d_fd, DIOCGFWHEADS, &u) == 0)
 		g.d_h = u;
 	else
 		pr(FATAL, EM_IOCTLFAILED, "DIOCGFWHEADS", strerror(errno));
 	if (ioctl(d->d_fd, DIOCGSECTORSIZE, &u) == 0)
 		if (u != 512)
-		    pr(FATAL, "sector size not a multiple of 512");
+			pr(FATAL, "sector size not a multiple of 512");
 	if (ioctl(d->d_fd, DIOCGMEDIASIZE, &o))
 		pr(FATAL, EM_IOCTLFAILED, "DIOCGMEDIASIZE", strerror(errno));
 
@@ -119,7 +115,6 @@ struct disk_geom *disk_geometry(disk_desc *d)
 	return (&g);
 }
 
-
 /*
  * tell the OS to reread a changed partition table. Do
  * nothing if there is no such possibility.
@@ -128,9 +123,8 @@ struct disk_geom *disk_geometry(disk_desc *d)
 int reread_partition_table(int fd)
 {
 #if defined(__linux__) && defined(BLKRRPART)
-	if (ioctl(fd,BLKRRPART) == -1)
-	{
-		pr(ERROR,"rereading partition table: %s",strerror(errno));
+	if (ioctl(fd, BLKRRPART) == -1) {
+		pr(ERROR, "rereading partition table: %s", strerror(errno));
 		return (0);
 	}
 #endif

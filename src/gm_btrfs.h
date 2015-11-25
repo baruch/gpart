@@ -34,7 +34,7 @@ typedef uint8_t u8;
 
 #define BTRFS_SUPER_INFO_OFFSET (64 * 1024)
 #define BTRFS_SUPER_INFO_SIZE 4096
-#define btrfs_sb_offset(i) ((i) ? ((16*1024) << (BTRFS_SUPER_MIRROR_SHIFT * (i))) : BTRFS_SUPER_INFO_SIZE)
+#define btrfs_sb_offset(i) ((i) ? ((16 * 1024) << (BTRFS_SUPER_MIRROR_SHIFT * (i))) : BTRFS_SUPER_INFO_SIZE)
 #define BTRFS_SUPER_MIRROR_SHIFT 12
 #define BTRFS_CSUM_SIZE 32
 #define BTRFS_FSID_SIZE 16
@@ -77,7 +77,7 @@ struct btrfs_root_backup {
 	u8 csum_root_level;
 	/* future and to align */
 	u8 unused_8[10];
-} __attribute__ ((__packed__));
+} __attribute__((__packed__));
 
 #define BTRFS_UUID_SIZE 16
 struct btrfs_dev_item {
@@ -125,13 +125,13 @@ struct btrfs_dev_item {
 
 	/* uuid of FS who owns this device */
 	u8 fsid[BTRFS_UUID_SIZE];
-} __attribute__ ((__packed__));
+} __attribute__((__packed__));
 
 struct btrfs_super_block {
 	u8 csum[BTRFS_CSUM_SIZE];
 	/* the first 3 fields must match struct btrfs_header */
-	u8 fsid[BTRFS_FSID_SIZE];    /* FS specific uuid */
-	__le64 bytenr; /* this block number */
+	u8 fsid[BTRFS_FSID_SIZE]; /* FS specific uuid */
+	__le64 bytenr;			  /* this block number */
 	__le64 flags;
 	/* allowed to be different from the btrfs_header from here own down */
 	__le64 magic;
@@ -170,6 +170,6 @@ struct btrfs_super_block {
 	__le64 reserved[30];
 	u8 sys_chunk_array[BTRFS_SYSTEM_CHUNK_ARRAY_SIZE];
 	struct btrfs_root_backup super_roots[BTRFS_NUM_BACKUP_ROOTS];
-} __attribute__ ((__packed__));
+} __attribute__((__packed__));
 
 #endif /* _GM_BTRFS_H */

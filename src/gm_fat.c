@@ -1,4 +1,4 @@
-/*      
+/*
  * gm_fat.c -- gpart fat guessing module
  *
  * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
@@ -17,8 +17,7 @@
 #include "gpart.h"
 #include "gm_fat.h"
 
-
-int fat_init(disk_desc *d,g_module *m)
+int fat_init(disk_desc *d, g_module *m)
 {
 	if ((d == 0) || (m == 0))
 		return (0);
@@ -27,28 +26,22 @@ int fat_init(disk_desc *d,g_module *m)
 	return (sizeof(struct fat_boot_sector));
 }
 
+int fat_term(disk_desc *d) { return (1); }
 
-
-int fat_term(disk_desc *d)
+int fat_gfun(disk_desc *d, g_module *m)
 {
-        return (1);
-}
-
-
-
-int fat_gfun(disk_desc *d,g_module *m)
-{
-	struct fat_boot_sector	*sb = (struct fat_boot_sector *)d->d_sbuf;
-	dos_part_entry		*pt = &m->m_part;
-	unsigned long		nsecs = 0;
-	unsigned char		ig1, ig2, media;
-	int			sectsize, fat32 = 0, fat12 = 0;
-	s64_t			size = 0;
+	struct fat_boot_sector *sb = (struct fat_boot_sector *)d->d_sbuf;
+	dos_part_entry *pt = &m->m_part;
+	unsigned long nsecs = 0;
+	unsigned char ig1, ig2, media;
+	int sectsize, fat32 = 0, fat12 = 0;
+	s64_t size = 0;
 
 	m->m_guess = GM_NO;
-	ig1 = sb->ignored[0]; ig2 = sb->ignored[2]; media = sb->media;
-	if ((ig1 == 0xeb) && (ig2 == 0x90) && ((media == 0xf8) || (media == 0xfc)))
-	{
+	ig1 = sb->ignored[0];
+	ig2 = sb->ignored[2];
+	media = sb->media;
+	if ((ig1 == 0xeb) && (ig2 == 0x90) && ((media == 0xf8) || (media == 0xfc))) {
 		if (*((unsigned short *)d->d_sbuf + 255) != le16(DOSPTMAGIC))
 			return (1);
 
@@ -76,7 +69,6 @@ int fat_gfun(disk_desc *d,g_module *m)
 			return (1);
 		m->m_guess = GM_YES;
 
-
 		/*
 		 * what happens when the fat sectsize != medium sectsize?
 		 * I don't know. I just say no now.
@@ -84,14 +76,14 @@ int fat_gfun(disk_desc *d,g_module *m)
 
 		if (sectsize != d->d_ssize)
 			m->m_guess = GM_NO;
-		size = nsecs; size *= sectsize; size /= 1024;
-		if (size >= 32768)
-		{
+		size = nsecs;
+		size *= sectsize;
+		size /= 1024;
+		if (size >= 32768) {
 			pt->p_typ = 0x06;
 			if (fat32)
 				pt->p_typ = d->d_lba ? 0x0C : 0x0B;
-		}
-		else
+		} else
 			pt->p_typ = fat12 ? 0x01 : 0x04;
 		pt->p_size = nsecs;
 	}

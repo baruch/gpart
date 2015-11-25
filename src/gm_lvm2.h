@@ -40,26 +40,26 @@ typedef unsigned int uint32_t;
 /* On disk - 32 bytes */
 struct label_header {
 	int8_t id[8];		/* LABELONE */
-	uint64_t sector_xl;	/* Sector number of this label */
+	uint64_t sector_xl; /* Sector number of this label */
 	uint32_t crc_xl;	/* From next field to end of sector */
-	uint32_t offset_xl;	/* Offset from start of struct to contents */
+	uint32_t offset_xl; /* Offset from start of struct to contents */
 	int8_t type[8];		/* LVM2 001 */
-} __attribute__ ((packed));
+} __attribute__((packed));
 
 struct disk_locn {
-        uint64_t offset;        /* Offset in bytes to start sector */
-        uint64_t size;          /* Bytes */
-} __attribute__ ((packed));
+	uint64_t offset; /* Offset in bytes to start sector */
+	uint64_t size;   /* Bytes */
+} __attribute__((packed));
 
 struct pv_header {
 	int8_t pv_uuid[ID_LEN];
 
 	/* This size can be overridden if PV belongs to a VG */
-	uint64_t device_size_xl;	/* Bytes */
+	uint64_t device_size_xl; /* Bytes */
 
 	/* NULL-terminated list of data areas followed by */
 	/* NULL-terminated list of metadata area headers */
-	struct disk_locn disk_areas_xl[0];	/* Two lists */
-} __attribute__ ((packed));
+	struct disk_locn disk_areas_xl[0]; /* Two lists */
+} __attribute__((packed));
 
 #endif /* _GM_LVM2_H */

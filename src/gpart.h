@@ -26,8 +26,6 @@
 
 typedef uint8_t byte_t;
 
-
-
 #define le16(x) htole16(x)
 #define be16(x) htobe16(x)
 #define le32(x) htole32(x)

@@ -1,4 +1,4 @@
-/*      
+/*
  * gm_hpfs.c -- gpart hpfs guessing module
  *
  * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
@@ -22,11 +22,9 @@
 #include "gpart.h"
 #include "gm_hpfs.h"
 
-#define OS2SECTSIZE		512
+#define OS2SECTSIZE 512
 
-
-
-int hpfs_init(disk_desc *d,g_module *m)
+int hpfs_init(disk_desc *d, g_module *m)
 {
 	if ((d == 0) || (m == 0))
 		return (0);
@@ -35,45 +33,37 @@ int hpfs_init(disk_desc *d,g_module *m)
 	return (OS2SECTSIZE);
 }
 
+int hpfs_term(disk_desc *d) { return (1); }
 
-
-int hpfs_term(disk_desc *d)
+int hpfs_gfun(disk_desc *d, g_module *m)
 {
-        return (1);
-}
-
-
-
-int hpfs_gfun(disk_desc *d,g_module *m)
-{
-	struct hpfs_boot_block	*bb = (struct hpfs_boot_block *)d->d_sbuf;
-	struct hpfs_super_block	*sb;
-	s64_t			s;
-	size_t			psize;
-	byte_t			*ubuf, *sbuf;
+	struct hpfs_boot_block *bb = (struct hpfs_boot_block *)d->d_sbuf;
+	struct hpfs_super_block *sb;
+	s64_t s;
+	size_t psize;
+	byte_t *ubuf, *sbuf;
 
 	m->m_guess = GM_NO;
-	if (	(bb->sig_28h == 0x28) &&
-		(strncmp((char *)bb->sig_hpfs,"HPFS    ",8) == 0) &&
-		(bb->magic == le16(0xaa55)) &&
-		(bb->bytes_per_sector == le16(OS2SECTSIZE)))
-	{
+	if ((bb->sig_28h == 0x28) && (strncmp((char *)bb->sig_hpfs, "HPFS    ", 8) == 0) && (bb->magic == le16(0xaa55)) &&
+		(bb->bytes_per_sector == le16(OS2SECTSIZE))) {
 		/*
 		 * looks like a hpfs boot sector. Test hpfs superblock
 		 * at sector offset 16 (from start of partition).
 		 */
 
 		if ((s = l64tell(d->d_fd)) == -1)
-			pr(FATAL,"hpfs: cannot seek: %s",strerror(errno));
-		s /= d->d_ssize; s -= d->d_nsb; s *= d->d_ssize;
-		if (l64seek(d->d_fd,16 * OS2SECTSIZE - s,SEEK_CUR) == -1)
-			pr(FATAL,"hpfs: cannot seek: %s",strerror(errno));
+			pr(FATAL, "hpfs: cannot seek: %s", strerror(errno));
+		s /= d->d_ssize;
+		s -= d->d_nsb;
+		s *= d->d_ssize;
+		if (l64seek(d->d_fd, 16 * OS2SECTSIZE - s, SEEK_CUR) == -1)
+			pr(FATAL, "hpfs: cannot seek: %s", strerror(errno));
 
 		psize = getpagesize();
 		ubuf = alloc(OS2SECTSIZE + psize);
-		sbuf = align(ubuf,psize);
-		if (read(d->d_fd,sbuf,OS2SECTSIZE) != OS2SECTSIZE)
-			pr(FATAL,"hpfs: cannot read super block");
+		sbuf = align(ubuf, psize);
+		if (read(d->d_fd, sbuf, OS2SECTSIZE) != OS2SECTSIZE)
+			pr(FATAL, "hpfs: cannot read super block");
 		sb = (struct hpfs_super_block *)sbuf;
 		if (sb->magic != le32(SB_MAGIC))
 			goto out;
@@ -88,7 +78,7 @@ int hpfs_gfun(disk_desc *d,g_module *m)
 		m->m_part.p_start = d->d_nsb;
 		m->m_part.p_size = s;
 		m->m_guess = GM_YES;
-out:
+	out:
 		free((void *)ubuf);
 	}
 	return (1);

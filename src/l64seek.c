@@ -17,36 +17,28 @@
 #include "config.h" /* for large file support */
 #include "l64seek.h"
 
-
-#define OSTACKLEN	16
-static struct
-{
-	s64_t		fpos;
-	int		fd;
+#define OSTACKLEN 16
+static struct {
+	s64_t fpos;
+	int fd;
 } ostck[OSTACKLEN];
-static int		osptr = -1;
+static int osptr = -1;
 
-
-
-off64_t l64seek(int fd,off64_t offset,int whence)
+off64_t l64seek(int fd, off64_t offset, int whence)
 {
-	off64_t		ret = (off64_t)-1;
+	off64_t ret = (off64_t)-1;
 
-	ret = lseek(fd,offset,whence);
+	ret = lseek(fd, offset, whence);
 
 	return (ret);
 }
 
-
-
 int l64opush(int fd)
 {
-	s64_t		fpos;
+	s64_t fpos;
 
-	if (osptr < OSTACKLEN - 1)
-	{
-		if ((fpos = l64tell(fd)) >= 0)
-		{
+	if (osptr < OSTACKLEN - 1) {
+		if ((fpos = l64tell(fd)) >= 0) {
 			ostck[++osptr].fd = fd;
 			ostck[osptr].fpos = fpos;
 			return (1);
@@ -54,7 +46,6 @@ int l64opush(int fd)
 	}
 	return (0);
 }
-
 
 s64_t l64opop(int fd)
 {

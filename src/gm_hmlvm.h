@@ -1,6 +1,6 @@
 /*
  * gm_hmlvm.h -- gpart Linux LVM physical volume guessing module header
- * 
+ *
  * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
  * Guess PC-type hard disk partitions.
  *
@@ -10,7 +10,7 @@
  * option) any later version.
  *
  * Created:   29.08.1999 <mb@ichabod.han.de>
- * Modified:  
+ * Modified:
  *
  */
 
@@ -66,8 +66,8 @@ typedef struct {
 
 /* disk */
 typedef struct {
-	uint8_t id[2];		/* Identifier */
-	uint16_t version;		/* HM lvm version */
+	uint8_t id[2];	/* Identifier */
+	uint16_t version; /* HM lvm version */
 	lvm_disk_data_t pv_on_disk;
 	lvm_disk_data_t vg_on_disk;
 	lvm_disk_data_t pv_uuidlist_on_disk;
@@ -75,12 +75,12 @@ typedef struct {
 	lvm_disk_data_t pe_on_disk;
 	uint8_t pv_uuid[NAME_LEN];
 	uint8_t vg_name[NAME_LEN];
-	uint8_t system_id[NAME_LEN];	/* for vgexport/vgimport */
+	uint8_t system_id[NAME_LEN]; /* for vgexport/vgimport */
 	uint32_t pv_major;
 	uint32_t pv_number;
 	uint32_t pv_status;
 	uint32_t pv_allocatable;
-	uint32_t pv_size;		/* HM */
+	uint32_t pv_size; /* HM */
 	uint32_t lv_cur;
 	uint32_t pe_size;
 	uint32_t pe_total;

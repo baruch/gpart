@@ -1,4 +1,4 @@
-/*      
+/*
  * gm_beos.c -- gpart BeOS filesystem guessing module
  *
  * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
@@ -22,7 +22,7 @@
 
 #include <stdio.h>
 
-int beos_init(disk_desc *d,g_module *m)
+int beos_init(disk_desc *d, g_module *m)
 {
 	if ((d == 0) || (m == 0))
 		return (0);
@@ -30,19 +30,12 @@ int beos_init(disk_desc *d,g_module *m)
 	return (2 * 512);
 }
 
+int beos_term(disk_desc *d) { return (1); }
 
-
-int beos_term(disk_desc *d)
+int beos_gfun(disk_desc *d, g_module *m)
 {
-        return (1);
-}
-
-
-
-int beos_gfun(disk_desc *d,g_module *m)
-{
-	beos_super_block	*sb;
-	s64_t			size;
+	beos_super_block *sb;
+	s64_t size;
 
 	m->m_guess = GM_NO;
 
@@ -51,17 +44,15 @@ int beos_gfun(disk_desc *d,g_module *m)
 	 */
 
 	sb = (beos_super_block *)(d->d_sbuf + 512);
-	if ((sb->magic1 != BEOS_SUPER_BLOCK_MAGIC1) ||
-	    (sb->magic2 != BEOS_SUPER_BLOCK_MAGIC2) ||
-	    (sb->magic3 != BEOS_SUPER_BLOCK_MAGIC3))
+	if ((sb->magic1 != BEOS_SUPER_BLOCK_MAGIC1) || (sb->magic2 != BEOS_SUPER_BLOCK_MAGIC2) ||
+		(sb->magic3 != BEOS_SUPER_BLOCK_MAGIC3))
 		return (1);
 
 	/*
 	 * some consistency checks
 	 */
 
-	if ((sb->block_size != 1024) && (sb->block_size != 2048) &&
-	    (sb->block_size != 4096) && (sb->block_size != 8192))
+	if ((sb->block_size != 1024) && (sb->block_size != 2048) && (sb->block_size != 4096) && (sb->block_size != 8192))
 		return (1);
 
 	if (sb->block_size != 1 << sb->block_shift)
@@ -78,7 +69,9 @@ int beos_gfun(disk_desc *d,g_module *m)
 	 * as well later.
 	 */
 
-	size = sb->num_blocks; size *= sb->block_size; size /= d->d_ssize;
+	size = sb->num_blocks;
+	size *= sb->block_size;
+	size /= d->d_ssize;
 	m->m_guess = GM_YES;
 	m->m_part.p_typ = 0xEB;
 	m->m_part.p_start = d->d_nsb;

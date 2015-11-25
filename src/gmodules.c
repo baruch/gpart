@@ -20,79 +20,60 @@
 #include <string.h>
 #include "gpart.h"
 
+static g_module *g_head;
+static int g_count;
 
-static g_module		*g_head;
-static int		g_count;
+g_module *g_mod_head() { return (g_head); }
 
-
-
-g_module *g_mod_head()
-{
-	return (g_head);
-}
-
-
-
-int g_mod_count()
-{
-	return (g_count);
-}
-
-
+int g_mod_count() { return (g_count); }
 
 void g_mod_list()
 {
-	g_module	*m;
+	g_module *m;
 
-	pr(MSG,"Module\tWeight\n");
+	pr(MSG, "Module\tWeight\n");
 	for (m = g_head; m; m = m->m_next)
-		pr(MSG,"%s\t(%3.1f)\n",m->m_name,m->m_weight);
-	pr(MSG,"\n");
+		pr(MSG, "%s\t(%3.1f)\n", m->m_name, m->m_weight);
+	pr(MSG, "\n");
 }
-
-
 
 void g_mod_delete(g_module *m)
 {
-	if (m)
-	{
-		if (m->m_name) free((void *)m->m_name);
+	if (m) {
+		if (m->m_name)
+			free((void *)m->m_name);
 		free(m);
 		g_count--;
 	}
 }
 
-
-
 void g_mod_deleteall()
 {
-	g_module	*m;
+	g_module *m;
 
-	while (g_head)
-	{
-		m = g_head->m_next; g_mod_delete(g_head); g_head = m;
+	while (g_head) {
+		m = g_head->m_next;
+		g_mod_delete(g_head);
+		g_head = m;
 	}
 }
 
-
-
 /*
- * set weight of module and re-insert as head. 
+ * set weight of module and re-insert as head.
  */
 
-g_module *g_mod_setweight(char *name,float weight)
+g_module *g_mod_setweight(char *name, float weight)
 {
-	g_module	*m, *prev = 0;
+	g_module *m, *prev = 0;
 
 	for (m = g_head; m; m = m->m_next)
-		if (strcmp(m->m_name,name) == 0)
+		if (strcmp(m->m_name, name) == 0)
 			break;
 		else
 			prev = m;
 	if (m == 0)
 		return (0);
-	if (prev)
-	{
+	if (prev) {
 		prev->m_next = m->m_next;
 		m->m_next = g_head;
 		g_head = m;
@@ -101,23 +82,18 @@ g_module *g_mod_setweight(char *name,float weight)
 	return (g_head);
 }
 
-
-
-g_module *g_mod_lookup(int how,char *name)
+g_module *g_mod_lookup(int how, char *name)
 {
-	g_module	*m;
+	g_module *m;
 
-	if (g_head == 0)
-	{
+	if (g_head == 0) {
 		if (how == GM_LOOKUP)
 			return (0);
 		g_head = (g_module *)alloc(sizeof(g_module));
 		m = g_head;
-	}
-	else
-	{
+	} else {
 		for (m = g_head; m->m_next; m = m->m_next)
-			if (strcmp(m->m_name,name) == 0)
+			if (strcmp(m->m_name, name) == 0)
 				return (m);
 		if (how == GM_LOOKUP)
 			return (0);
@@ -125,8 +101,9 @@ g_module *g_mod_lookup(int how,char *name)
 		m = m->m_next;
 	}
 	if ((m->m_name = strdup(name)) == 0)
-		pr(FATAL,"out of memory in strdup");
-	m->m_weight = 1.0; g_count++;
+		pr(FATAL, "out of memory in strdup");
+	m->m_weight = 1.0;
+	g_count++;
 	return (m);
 }
 
@@ -148,10 +125,10 @@ void g_mod_addinternals()
 		} \
 	} while (0);
 
-	/*
-	 * If no weights are given on the command line, the order
-	 * is somehow important.
-	 */
+/*
+ * If no weights are given on the command line, the order
+ * is somehow important.
+ */
 
 #define G_MODULE(mod) GMODINS(mod)
 G_MODULES

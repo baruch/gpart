@@ -1,6 +1,6 @@
 /*
  * gm_minix.h -- gpart minix guessing module header
- * 
+ *
  * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
  * Guess PC-type hard disk partitions.
  *
@@ -10,18 +10,16 @@
  * option) any later version.
  *
  * Created:   04.01.1999 <mb@ichabod.han.de>
- * Modified:  
+ * Modified:
  *
  */
 
 #ifndef _GM_MINIX_H
 #define _GM_MINIX_H
 
-
 /*
  * Minix filesystem structures, taken from the Linux kernel.
  */
-
 
 /* imported from asm/types.h */
 typedef __signed__ char __s8;
@@ -105,6 +103,5 @@ struct minix_super_block {
 	__u16 s_state;
 	__u32 s_zones;
 };
-
 
 #endif /* _GM_MINIX_H */

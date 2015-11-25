@@ -1,4 +1,4 @@
-/*      
+/*
  * gm_ext2.c -- gpart ext2 guessing module
  *
  * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
@@ -27,10 +27,9 @@
 #include "gpart.h"
 #include "gm_ext2.h"
 
-
-int ext2_init(disk_desc *d,g_module *m)
+int ext2_init(disk_desc *d, g_module *m)
 {
-	int		bsize = SUPERBLOCK_SIZE;
+	int bsize = SUPERBLOCK_SIZE;
 
 	if ((d == 0) || (m == 0))
 		return (0);
@@ -40,32 +39,23 @@ int ext2_init(disk_desc *d,g_module *m)
 	 * of the superblock size or vice versa.
 	 */
 
-	if (((d->d_ssize > bsize) && (d->d_ssize % bsize)) ||
-	    ((d->d_ssize < bsize) && (bsize % d->d_ssize)))
-	{
-		pr(ERROR,"ext2_init: cannot work on that sector size");
+	if (((d->d_ssize > bsize) && (d->d_ssize % bsize)) || ((d->d_ssize < bsize) && (bsize % d->d_ssize))) {
+		pr(ERROR, "ext2_init: cannot work on that sector size");
 		return (0);
 	}
 	m->m_desc = "Linux ext2";
 	return (SUPERBLOCK_OFFSET + SUPERBLOCK_SIZE);
 }
 
+int ext2_term(disk_desc *d) { return (1); }
 
-
-int ext2_term(disk_desc *d)
+int ext2_gfun(disk_desc *d, g_module *m)
 {
-	return (1);
-}
-
-
-
-int ext2_gfun(disk_desc *d,g_module *m)
-{
-	struct ext2fs_sb	*sb, *sparesb;
-	int			psize, bsize = 1024;
-	s64_t			ls, ofs;
-	dos_part_entry		*pt = &m->m_part;
-	byte_t			*ubuf, *sbuf;
+	struct ext2fs_sb *sb, *sparesb;
+	int psize, bsize = 1024;
+	s64_t ls, ofs;
+	dos_part_entry *pt = &m->m_part;
+	byte_t *ubuf, *sbuf;
 
 	m->m_guess = GM_NO;
 	sb = (struct ext2fs_sb *)(d->d_sbuf + SUPERBLOCK_OFFSET);
@@ -76,12 +66,12 @@ int ext2_gfun(disk_desc *d,g_module *m)
 	 * first some plausability checks.
 	 */
 
-	if (sb->s_free_blocks_count >= sb->s_blocks_count) return (1);
-	if (sb->s_free_inodes_count >= sb->s_inodes_count) return (1);
-	if (sb->s_errors &&
-	    (sb->s_errors != EXT2_ERRORS_CONTINUE) &&
-	    (sb->s_errors != EXT2_ERRORS_RO) &&
-	    (sb->s_errors != EXT2_ERRORS_PANIC))
+	if (sb->s_free_blocks_count >= sb->s_blocks_count)
+		return (1);
+	if (sb->s_free_inodes_count >= sb->s_inodes_count)
+		return (1);
+	if (sb->s_errors && (sb->s_errors != EXT2_ERRORS_CONTINUE) && (sb->s_errors != EXT2_ERRORS_RO) &&
+		(sb->s_errors != EXT2_ERRORS_PANIC))
 		return (1);
 	if (sb->s_state & ~(EXT2_VALID_FS | EXT2_ERROR_FS))
 		return (1);
@@ -97,10 +87,11 @@ int ext2_gfun(disk_desc *d,g_module *m)
 	 * yet they also shouldn't be too large.
 	 */
 
-	if (d->d_nsecs)
-	{
-		ls = sb->s_blocks_count; ls *= bsize;
-		ls /= d->d_ssize; ls += d->d_nsb;
+	if (d->d_nsecs) {
+		ls = sb->s_blocks_count;
+		ls *= bsize;
+		ls /= d->d_ssize;
+		ls += d->d_nsb;
 		if (ls > d->d_nsecs)
 			return (1);
 	}
@@ -109,12 +100,18 @@ int ext2_gfun(disk_desc *d,g_module *m)
 	 * ext2fs supports 1024, 2048 and 4096b blocks.
 	 */
 
-	switch (sb->s_log_block_size)
-	{
-		case BSIZE_1024 : bsize = 1024; break;
-		case BSIZE_2048 : bsize = 2048; break;
-		case BSIZE_4096 : bsize = 4096; break;
-		default:          return (1);
+	switch (sb->s_log_block_size) {
+	case BSIZE_1024:
+		bsize = 1024;
+		break;
+	case BSIZE_2048:
+		bsize = 2048;
+		break;
+	case BSIZE_4096:
+		bsize = 4096;
+		break;
+	default:
+		return (1);
 	}
 
 	/*
@@ -122,7 +119,7 @@ int ext2_gfun(disk_desc *d,g_module *m)
 	 * but ext3 usually has s_max_mnt_count==-1
 	 */
 
-	if ((sb->s_max_mnt_count!=-1)&&(sb->s_mnt_count > sb->s_max_mnt_count + 20))
+	if ((sb->s_max_mnt_count != -1) && (sb->s_mnt_count > sb->s_max_mnt_count + 20))
 		return (1);
 
 	/*
@@ -131,17 +128,20 @@ int ext2_gfun(disk_desc *d,g_module *m)
 	 */
 
 	if ((ls = l64tell(d->d_fd)) == -1)
-		pr(FATAL,"ext2: cannot seek: %s",strerror(errno));
-	ls /= d->d_ssize; ls -= d->d_nsb; ls *= d->d_ssize;
-	ofs = sb->s_blocks_per_group + sb->s_first_data_block; ofs *= bsize;
-	if (l64seek(d->d_fd,ofs - ls,SEEK_CUR) == -1)
-		pr(FATAL,"ext2: cannot seek: %s",strerror(errno));
+		pr(FATAL, "ext2: cannot seek: %s", strerror(errno));
+	ls /= d->d_ssize;
+	ls -= d->d_nsb;
+	ls *= d->d_ssize;
+	ofs = sb->s_blocks_per_group + sb->s_first_data_block;
+	ofs *= bsize;
+	if (l64seek(d->d_fd, ofs - ls, SEEK_CUR) == -1)
+		pr(FATAL, "ext2: cannot seek: %s", strerror(errno));
 
 	psize = getpagesize();
 	ubuf = alloc(SUPERBLOCK_SIZE + psize);
-	sbuf = align(ubuf,psize);
-	if (read(d->d_fd,sbuf,SUPERBLOCK_SIZE) != SUPERBLOCK_SIZE)
-		pr(FATAL,"ext2: cannot read spare super block");
+	sbuf = align(ubuf, psize);
+	if (read(d->d_fd, sbuf, SUPERBLOCK_SIZE) != SUPERBLOCK_SIZE)
+		pr(FATAL, "ext2: cannot read spare super block");
 	sparesb = (struct ext2fs_sb *)sbuf;
 
 	/*

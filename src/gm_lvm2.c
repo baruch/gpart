@@ -18,8 +18,7 @@
 #include "gpart.h"
 #include "gm_lvm2.h"
 
-
-int lvm2_init(disk_desc *d,g_module *m)
+int lvm2_init(disk_desc *d, g_module *m)
 {
 	if ((d == 0) || (m == 0))
 		return (0);
@@ -28,16 +27,9 @@ int lvm2_init(disk_desc *d,g_module *m)
 	return SECTOR_SIZE + LABEL_SIZE;
 }
 
+int lvm2_term(disk_desc *d) { return (1); }
 
-
-int lvm2_term(disk_desc *d)
-{
-	return (1);
-}
-
-
-
-int lvm2_gfun(disk_desc *d,g_module *m)
+int lvm2_gfun(disk_desc *d, g_module *m)
 {
 	struct label_header *lh;
 	struct pv_header *pvh;
@@ -46,14 +38,13 @@ int lvm2_gfun(disk_desc *d,g_module *m)
 	byte_t *p = d->d_sbuf + SECTOR_SIZE;
 
 	m->m_guess = GM_NO;
-	lh = (struct label_header*)p;
-	if (strncmp((char*)lh->id, LABEL_ID, sizeof(lh->id)) ||
-	    strncmp((char*)lh->type, LVM2_LABEL, sizeof(lh->type)))
+	lh = (struct label_header *)p;
+	if (strncmp((char *)lh->id, LABEL_ID, sizeof(lh->id)) || strncmp((char *)lh->type, LVM2_LABEL, sizeof(lh->type)))
 		return 1;
 
-	pvh = (struct pv_header*) ((char*)lh + le32toh(lh->offset_xl));
+	pvh = (struct pv_header *)((char *)lh + le32toh(lh->offset_xl));
 	pv_size = le64toh(pvh->device_size_xl);
-	pv_size /=  d->d_ssize;
+	pv_size /= d->d_ssize;
 	if (d->d_nsecs != 0 && pv_size > d->d_nsecs - d->d_nsb)
 		return 1;
 

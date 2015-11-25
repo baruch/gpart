@@ -1,4 +1,4 @@
-/*      
+/*
  * gm_lswap.c -- gpart linux swap guessing module
  *
  * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
@@ -18,14 +18,11 @@
 #include <string.h>
 #include "gpart.h"
 
+static char *sigs[] = {"SWAP-SPACE", "SWAPSPACE2"};
+static int pszs[] = {4096, 8192};
+static int siglen = 10;
 
-static char		*sigs[] = { "SWAP-SPACE", "SWAPSPACE2" };
-static int		pszs[] = { 4096, 8192 };
-static int		siglen = 10;
-
-
-
-int lswap_init(disk_desc *d,g_module *m)
+int lswap_init(disk_desc *d, g_module *m)
 {
 	if ((d == 0) || (m == 0))
 		return (0);
@@ -40,31 +37,24 @@ int lswap_init(disk_desc *d,g_module *m)
 	return (8192);
 }
 
+int lswap_term(disk_desc *d) { return (1); }
 
-
-int lswap_term(disk_desc *d)
+int lswap_gfun(disk_desc *d, g_module *m)
 {
-        return (1);
-}
+	char *sig = 0;
+	int i, j, pagesize, vers;
+	byte_t *p, b;
+	s64_t np = 0;
+	dos_part_entry *pt = &m->m_part;
 
-
-
-int lswap_gfun(disk_desc *d,g_module *m)
-{
-	char		*sig = 0;
-	int		i, j, pagesize, vers;
-	byte_t		*p, b;
-	s64_t		np = 0;
-	dos_part_entry	*pt = &m->m_part;
-
-	m->m_guess = GM_NO; pagesize = vers = 0;
-	for (i = 0; (pagesize == 0) && (i < sizeof(sigs)/sizeof(char *)); i++)
-		for (j = 0; j < sizeof(pszs)/sizeof(int); j++)
-		{
+	m->m_guess = GM_NO;
+	pagesize = vers = 0;
+	for (i = 0; (pagesize == 0) && (i < sizeof(sigs) / sizeof(char *)); i++)
+		for (j = 0; j < sizeof(pszs) / sizeof(int); j++) {
 			sig = (char *)(d->d_sbuf + pszs[j] - siglen);
-			if (strncmp(sig,sigs[i],siglen) == 0)
-			{
-				pagesize = pszs[j]; vers = i;
+			if (strncmp(sig, sigs[i], siglen) == 0) {
+				pagesize = pszs[j];
+				vers = i;
 				break;
 			}
 		}
@@ -83,31 +73,31 @@ int lswap_gfun(disk_desc *d,g_module *m)
 		np = (p - d->d_sbuf) * 8;
 		for (b = *p; (b & 0x01) == 1; b >>= 1)
 			np++;
-	}
-	else if (vers == 1) /* Linux > 2.2.X swap partitions */
+	} else if (vers == 1) /* Linux > 2.2.X swap partitions */
 	{
-		struct swapinfo
-		{
-			char		bootbits[1024];
-			unsigned int	version;
-			unsigned int	last_page;
-			unsigned int	nr_badpages;
-			unsigned int	padding[125];
-			unsigned int	badpages[1];
+		struct swapinfo {
+			char bootbits[1024];
+			unsigned int version;
+			unsigned int last_page;
+			unsigned int nr_badpages;
+			unsigned int padding[125];
+			unsigned int badpages[1];
 		} *info = (struct swapinfo *)d->d_sbuf;
 
 		if (info->version != 1)
 			return (1);
 		np = 1 + info->last_page;
-	}
-	else
+	} else
 		return (1);
 
 	if (np >= 10) /* mkswap(8) says this */
 	{
-		np *= pagesize; np /= d->d_ssize;
-		m->m_guess = GM_YES; pt->p_typ = 0x82;
-		pt->p_start = d->d_nsb; pt->p_size = np;
+		np *= pagesize;
+		np /= d->d_ssize;
+		m->m_guess = GM_YES;
+		pt->p_typ = 0x82;
+		pt->p_start = d->d_nsb;
+		pt->p_size = np;
 	}
 	return (1);
 }

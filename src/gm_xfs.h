@@ -1,6 +1,6 @@
 /*
  * gm_xfs.h -- gpart SGI xfs guessing module header
- * 
+ *
  * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
  * Guess PC-type hard disk partitions.
  *

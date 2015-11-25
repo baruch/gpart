@@ -1,6 +1,6 @@
 /*
  * gm_fat.h -- gpart fat guessing module header
- * 
+ *
  * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
  * Guess PC-type hard disk partitions.
  *
@@ -10,19 +10,17 @@
  * option) any later version.
  *
  * Created:   04.01.1999 <mb@ichabod.han.de>
- * Modified:  
+ * Modified:
  *
  */
 
 #ifndef _GM_FAT_H
 #define _GM_FAT_H
 
-
 /*
  * FAT partition boot sector information, taken from the Linux
  * kernel sources.
  */
-
 
 /* imported from asm/types.h */
 typedef __signed__ char __s8;

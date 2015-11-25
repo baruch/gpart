@@ -1,6 +1,6 @@
 /*
  * gm_beos.h -- gpart BeOS filesystem guessing module header
- * 
+ *
  * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
  * Guess PC-type hard disk partitions.
  *
@@ -10,7 +10,7 @@
  * option) any later version.
  *
  * Created:   29.01.2001 <mb@ichabod.han.de>
- * Modified:  
+ * Modified:
  *
  */
 
@@ -63,52 +63,51 @@ typedef unsigned int __u32;
  * special type of BEOS
  */
 
-typedef s64_t		beos_off_t;
-typedef s64_t		beos_bigtime_t;
-typedef void		beos_binode_etc;
+typedef s64_t beos_off_t;
+typedef s64_t beos_bigtime_t;
+typedef void beos_binode_etc;
 
 typedef struct _beos_block_run {
-	__u32	allocation_group;
-	__u16	start;
-	__u16	len;
+	__u32 allocation_group;
+	__u16 start;
+	__u16 len;
 } beos_block_run;
 
-typedef beos_block_run	beos_inode_addr;
+typedef beos_block_run beos_inode_addr;
 
 /*
  * The Superblock Structure
  */
 
 typedef struct _beos_super_block {
-	char	name[BEOS_NAME_LENGTH];
-	__u32	magic1;
-	__u32	fs_byte_order;
+	char name[BEOS_NAME_LENGTH];
+	__u32 magic1;
+	__u32 fs_byte_order;
 
-	__u32	block_size;
-	__u32	block_shift;
+	__u32 block_size;
+	__u32 block_shift;
 
-	beos_off_t  num_blocks;
-	beos_off_t  used_blocks;
+	beos_off_t num_blocks;
+	beos_off_t used_blocks;
 
-	__u32          inode_size;
+	__u32 inode_size;
 
-	__u32          magic2;
-	__u32          blocks_per_ag;
-	__u32          ag_shift;
-	__u32          num_ags;
+	__u32 magic2;
+	__u32 blocks_per_ag;
+	__u32 ag_shift;
+	__u32 num_ags;
 
-	__u32          flags;
+	__u32 flags;
 
-	beos_block_run  log_blocks;
-	beos_off_t      log_start;
-	beos_off_t      log_end;
+	beos_block_run log_blocks;
+	beos_off_t log_start;
+	beos_off_t log_end;
 
-	__u32          magic3;
+	__u32 magic3;
 	beos_inode_addr root_dir;
 	beos_inode_addr indices;
 
-	__u32          pad[8];
-} __attribute__ ((packed)) beos_super_block;
-
+	__u32 pad[8];
+} __attribute__((packed)) beos_super_block;
 
 #endif /* _GM_BEOS_H */

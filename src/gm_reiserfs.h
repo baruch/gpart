@@ -1,6 +1,6 @@
 /*
  * gm_reiserfs.h -- gpart ReiserFS guessing module header
- * 
+ *
  * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
  * Guess PC-type hard disk partitions.
  *
@@ -70,7 +70,7 @@ struct reiserfs_super_block_v35
 
 struct reiserfs_super_block_v36 {
 	struct reiserfs_super_block_v35 s_v35;
-	__u32 s_inode_generation; 
+	__u32 s_inode_generation;
 	__u32 s_flags;
 	char s_uuid[16];
 	char s_label[16];

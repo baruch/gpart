@@ -1,4 +1,4 @@
-/*      
+/*
  * gm_ntfs.c -- gpart ntfs guessing module
  *
  * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
@@ -21,9 +21,9 @@
 #include "gpart.h"
 #include "gm_ntfs.h"
 
-#define NTFS_SECTSIZE	512
+#define NTFS_SECTSIZE 512
 
-int ntfs_init(disk_desc *d,g_module *m)
+int ntfs_init(disk_desc *d, g_module *m)
 {
 	if ((d == 0) || (m == 0))
 		return (0);
@@ -33,25 +33,16 @@ int ntfs_init(disk_desc *d,g_module *m)
 	return (NTFS_SECTSIZE); /* The ntfs driver in Linux just assumes so */
 }
 
+int ntfs_term(disk_desc *d) { return (1); }
 
-
-int ntfs_term(disk_desc *d)
+int ntfs_gfun(disk_desc *d, g_module *m)
 {
-        return (1);
-}
-
-
-
-int ntfs_gfun(disk_desc *d,g_module *m)
-{
-	int	mft_clusters_per_record;
-	s64_t	size, ls;
-        byte_t	*ubuf, *sbuf;
-
+	int mft_clusters_per_record;
+	s64_t size, ls;
+	byte_t *ubuf, *sbuf;
 
 	m->m_guess = GM_NO;
-	if (IS_NTFS_VOLUME(d->d_sbuf))
-	{
+	if (IS_NTFS_VOLUME(d->d_sbuf)) {
 		/*
 		 * ntfs detection is quite weak, should come before
 		 * fat or hpfs.
@@ -73,14 +64,14 @@ int ntfs_gfun(disk_desc *d,g_module *m)
 		 * sector must be counted).
 		 */
 
-		ls = d->d_nsb + size; ls *= d->d_ssize;
-		if (l64seek(d->d_fd,ls,SEEK_SET) >= 0)
-		{
+		ls = d->d_nsb + size;
+		ls *= d->d_ssize;
+		if (l64seek(d->d_fd, ls, SEEK_SET) >= 0) {
 			ubuf = alloc(NTFS_SECTSIZE + getpagesize());
-			sbuf = align(ubuf,getpagesize());
-			if (read(d->d_fd,sbuf,NTFS_SECTSIZE) != NTFS_SECTSIZE)
-				pr(FATAL,"ntfs: cannot read backup boot sector");
-			if (memcmp(d->d_sbuf,sbuf,NTFS_SECTSIZE) == 0)
+			sbuf = align(ubuf, getpagesize());
+			if (read(d->d_fd, sbuf, NTFS_SECTSIZE) != NTFS_SECTSIZE)
+				pr(FATAL, "ntfs: cannot read backup boot sector");
+			if (memcmp(d->d_sbuf, sbuf, NTFS_SECTSIZE) == 0)
 				size += 1;
 			free((void *)ubuf);
 		}

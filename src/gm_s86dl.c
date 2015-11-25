@@ -1,4 +1,4 @@
-/*      
+/*
  * gm_s86dl.c -- gpart solaris/x86 disklabel guessing module
  *
  * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
@@ -17,8 +17,7 @@
 #include "gpart.h"
 #include "gm_s86dl.h"
 
-
-int s86dl_init(disk_desc *d,g_module *m)
+int s86dl_init(disk_desc *d, g_module *m)
 {
 	if ((d == 0) || (m == 0))
 		return (0);
@@ -27,36 +26,27 @@ int s86dl_init(disk_desc *d,g_module *m)
 	return (512 + sizeof(struct solaris_x86_vtoc));
 }
 
+int s86dl_term(disk_desc *d) { return (1); }
 
-
-int s86dl_term(disk_desc *d)
+int s86dl_gfun(disk_desc *d, g_module *m)
 {
-        return (1);
-}
-
-
-
-int s86dl_gfun(disk_desc *d,g_module *m)
-{
-	struct solaris_x86_vtoc		*svtoc;
-	struct solaris_x86_slice	*ws = 0, *rs = 0;
-	int				i;
+	struct solaris_x86_vtoc *svtoc;
+	struct solaris_x86_slice *ws = 0, *rs = 0;
+	int i;
 
 	m->m_guess = GM_NO;
 	svtoc = (struct solaris_x86_vtoc *)(d->d_sbuf + 512);
-	if ((svtoc->v_sanity != SOLARIS_X86_VTOC_SANE) ||
-	    (svtoc->v_version != SOLARIS_X86_V_VERSION))
+	if ((svtoc->v_sanity != SOLARIS_X86_VTOC_SANE) || (svtoc->v_version != SOLARIS_X86_V_VERSION))
 		return (1);
 
 	for (i = 0; i < SOLARIS_X86_NUMSLICE; i++)
-		switch (svtoc->v_slice[i].s_tag)
-		{
-			case SOLARIS_X86_V_ROOT :
-				rs = &svtoc->v_slice[i];
-				break;
-			case SOLARIS_X86_V_BACKUP :
-				ws = &svtoc->v_slice[i];
-				break;
+		switch (svtoc->v_slice[i].s_tag) {
+		case SOLARIS_X86_V_ROOT:
+			rs = &svtoc->v_slice[i];
+			break;
+		case SOLARIS_X86_V_BACKUP:
+			ws = &svtoc->v_slice[i];
+			break;
 		}
 
 	/*
@@ -73,11 +63,9 @@ int s86dl_gfun(disk_desc *d,g_module *m)
 		return (1);
 	if ((rs->s_start < ws->s_start) || (rs->s_size > ws->s_size))
 		return (1);
-	if (ws->s_flag && (ws->s_flag != SOLARIS_X86_V_UNMNT) &&
-	    (ws->s_flag != SOLARIS_X86_V_RONLY))
+	if (ws->s_flag && (ws->s_flag != SOLARIS_X86_V_UNMNT) && (ws->s_flag != SOLARIS_X86_V_RONLY))
 		return (1);
-	if (rs->s_flag && (rs->s_flag != SOLARIS_X86_V_UNMNT) &&
-	    (rs->s_flag != SOLARIS_X86_V_RONLY))
+	if (rs->s_flag && (rs->s_flag != SOLARIS_X86_V_UNMNT) && (rs->s_flag != SOLARIS_X86_V_RONLY))
 		return (1);
 
 	/*

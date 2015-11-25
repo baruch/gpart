@@ -1,4 +1,4 @@
-/*      
+/*
  * gm_reiserfs.c -- gpart ReiserFS guessing module
  *
  * gpart (c) 1999-2001 Michail Brzitwa <mb@ichabod.han.de>
@@ -22,8 +22,7 @@
 #include "gpart.h"
 #include "gm_reiserfs.h"
 
-
-int reiserfs_init(disk_desc *d,g_module *m)
+int reiserfs_init(disk_desc *d, g_module *m)
 {
 	if ((d == 0) || (m == 0))
 		return (0);
@@ -32,26 +31,18 @@ int reiserfs_init(disk_desc *d,g_module *m)
 	return (REISERFS_FIRST_BLOCK * 1024 + SB_V35_SIZE);
 }
 
+int reiserfs_term(disk_desc *d) { return (1); }
 
-
-int reiserfs_term(disk_desc *d)
+int reiserfs_gfun(disk_desc *d, g_module *m)
 {
-	return (1);
-}
-
-
-
-int reiserfs_gfun(disk_desc *d,g_module *m)
-{
-	struct reiserfs_super_block_v35	*sb;
-	dos_part_entry			*pt = &m->m_part;
-	s64_t				size;
+	struct reiserfs_super_block_v35 *sb;
+	dos_part_entry *pt = &m->m_part;
+	s64_t size;
 
 	m->m_guess = GM_NO;
 	sb = (struct reiserfs_super_block_v35 *)(d->d_sbuf + REISERFS_FIRST_BLOCK * 1024);
-	if (strncmp(sb->s_magic,REISERFS_SUPER_V35_MAGIC,12) == 0 || 
-	    strncmp(sb->s_magic,REISERFS_SUPER_V36_MAGIC,12) == 0)
-	{
+	if (strncmp(sb->s_magic, REISERFS_SUPER_V35_MAGIC, 12) == 0 ||
+		strncmp(sb->s_magic, REISERFS_SUPER_V36_MAGIC, 12) == 0) {
 		/*
 		 * sanity checks.
 		 */
@@ -62,8 +53,7 @@ int reiserfs_gfun(disk_desc *d,g_module *m)
 		if (sb->s_block_count < REISERFS_MIN_BLOCK_AMOUNT)
 			return (1);
 
-		if ((sb->s_state != REISERFS_VALID_FS) &&
-		    (sb->s_state != REISERFS_ERROR_FS))
+		if ((sb->s_state != REISERFS_VALID_FS) && (sb->s_state != REISERFS_ERROR_FS))
 			return (1);
 
 		if (sb->s_oid_maxsize % 2) /* must be even */
@@ -81,7 +71,9 @@ int reiserfs_gfun(disk_desc *d,g_module *m)
 
 		m->m_guess = GM_YES;
 		pt->p_start = d->d_nsb;
-		size = sb->s_block_count; size *= sb->s_blocksize; size /= d->d_ssize;
+		size = sb->s_block_count;
+		size *= sb->s_blocksize;
+		size /= d->d_ssize;
 		pt->p_size = (unsigned long)size;
 		pt->p_typ = 0x83;
 	}
