@@ -35,60 +35,30 @@
 
 #include <unistd.h>
 
-/*
- * get disk geometry. The medium is opened for reading,
- * descriptor in d_fd.
- */
-
-struct disk_geom *disk_geometry(disk_desc *d)
+#if defined(__linux__)
+static void os_disk_geometry(disk_desc *d, struct disk_geom *g)
 {
-	static struct disk_geom g;
+	struct hd_geometry hg;
 	uint64_t nsects;
 
-	memset(&g, 0, sizeof(g));
-
-#if defined(__linux__)
-	struct hd_geometry hg;
-#endif
-#if defined(__FreeBSD__)
-	struct disklabel dl;
-#endif
-
-	struct stat st;
-	int ret;
-	uint64_t lba;
-	ret = stat(d->d_dev, &st);
-	if (ret == 0) {
-		if (S_ISREG(st.st_mode)) {
-			nsects = st.st_size / 512;
-			if (nsects == 0)
-				pr(FATAL, EM_FATALERROR, "Not a block device image file");
-			lba = nsects - 1;
-			g.d_h = (lba / 63) % 255;
-			g.d_s = lba % 63 + 1;
-			g.d_c = lba / (255 * 63);
-			g.d_nsecs = nsects;
-			return (&g);
-		}
-	}
-
-#if defined(__linux__)
 	if (ioctl(d->d_fd, HDIO_GETGEO, &hg) == -1)
 		pr(FATAL, EM_IOCTLFAILED, "HDIO_GETGEO", strerror(errno));
+	else {
+		g->d_h = hg.heads;
+		g->d_s = hg.sectors;
+		g->d_c = hg.cylinders;
+	}
 #ifdef BLKGETSIZE
 	if (ioctl(d->d_fd, BLKGETSIZE, &nsects) == -1)
 		pr(FATAL, EM_IOCTLFAILED, "BLKGETSIZE", strerror(errno));
-	g.d_nsecs = nsects;
-	g.d_c = nsects / (hg.heads * hg.sectors);
-#else
-	g.d_c = hg.cylinders;
+	else
+		g->d_c = nsects / (hg.heads * hg.sectors);
 #endif
-	g.d_h = hg.heads;
-	g.d_s = hg.sectors;
-
-#endif
-
-#if defined(__FreeBSD__)
+}
+#elif defined(__FreeBSD__)
+static void os_disk_geometry(disk_desc *d, struct disk_geom *g)
+{
+	struct disklabel dl;
 	struct disklabel loclab;
 	u_int u;
 	off_t o; /* total disk size */
@@ -110,8 +80,44 @@ struct disk_geom *disk_geometry(disk_desc *d)
 
 	g.d_nsecs = o / u;
 	g.d_c = g.d_nsecs / g.d_h / g.d_s;
+}
+#else
+#error Only Linux and FreeBSD supported
 #endif
 
+/*
+ * get disk geometry. The medium is opened for reading,
+ * descriptor in d_fd.
+ */
+
+struct disk_geom *disk_geometry(disk_desc *d)
+{
+	static struct disk_geom g;
+	uint64_t nsects;
+
+	memset(&g, 0, sizeof(g));
+
+	struct stat st;
+	int ret;
+	uint64_t lba;
+	ret = stat(d->d_dev, &st);
+	if (ret == 0) {
+		// We have something, we'll use it for a first fill of the data
+		nsects = st.st_size / 512;
+		if (nsects == 0)
+			pr(FATAL, EM_FATALERROR, "Not a block device image file");
+		lba = nsects - 1;
+		g.d_h = (lba / 63) % 255;
+		g.d_s = lba % 63 + 1;
+		g.d_c = lba / (255 * 63);
+		g.d_nsecs = nsects;
+
+		// If it is a regular file there is no reason to try anything else
+		if (S_ISREG(st.st_mode))
+			return (&g);
+	}
+
+	os_disk_geometry(d, &g);
 	return (&g);
 }
 
