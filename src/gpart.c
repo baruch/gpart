@@ -162,19 +162,25 @@ byte_t *alloc(ssize_t s)
 
 ssize_t bread(int fd, byte_t *buf, size_t ssize, size_t nsecs)
 {
-	ssize_t cs = 0, nr = 0;
+	const size_t total = ssize * nsecs;
+	size_t read_bytes = 0;
 
-	for (; nsecs > 0; nsecs--) {
-		if ((nr = read(fd, buf, ssize)) == -1) {
+	while (read_bytes < total) {
+		ssize_t ret = read(fd, buf + read_bytes, total - read_bytes);
+		if (ret > 0)
+			read_bytes += ret;
+		else if (ret == 0) {
+			return read_bytes;
+		} else {
+			// ret < 0, an error case
+			if (errno == EINTR)
+				continue; // Rogue signal interruption, retry
 			berrno = errno;
-			return ((cs == 0) ? -1 : cs);
-		}
-		cs += nr;
-		buf += nr;
-		if (nr < ssize)
 			break;
+		}
 	}
-	return (cs);
+
+	return read_bytes ? read_bytes : -1;
 }
 
 static int yesno(char *q)
