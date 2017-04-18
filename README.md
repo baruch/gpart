@@ -21,28 +21,28 @@ See file *INSTALL*.
 
 ## Currently recognized partitions/filesystems types
 
-   Modname  | Typ  | Description
-   :--------|:----:|:------------
-   fat      | 0x01 | Primary DOS with 12 bit FAT
-            | 0x04 | Primary DOS with 16 bit FAT (<= 32MB)
-            | 0x06 | Primary 'big' DOS (> 32MB)
-            | 0x0B | DOS or Windows 95 with 32 bit FAT
-            | 0x0C | DOS or Windows 95 with 32 bit FAT, LBA
-   ntfs     | 0x07 | OS/2 HPFS, NTFS, QNX or Advanced UNIX
-   hpfs     | 0x07 | OS/2 HPFS, NTFS, QNX or Advanced UNIX
-   ext2     | 0x83 | Linux ext2 filesystem
-   lswap    | 0x82 | Linux swap
-   bsddl    | 0xA5 | FreeBSD/NetBSD/386BSD
-   s86dl    | 0x82 | Solaris/x86 disklabel
-   minix    | 0x80 | Minix V1
-            | 0x81 | Minix V2
-   reiserfs | 0x83 | ReiserFS filesystem
-   hmlvm    | 0xFE | Linux LVM physical volumes
-   qnx4     | 0x4F | QNX 4.x
-   beos     | 0xEB | BeOS fs
-   xfs      | 0x83 | SGI XFS filesystem
-   btrfs    | 0x83 | BtrFS
-   LVM2     | 0x8E | LVM2
+   Modname    | Typ  | Description
+   :----------|:----:|:------------
+   | fat      | 0x01 | Primary DOS with 12 bit FAT
+   |          | 0x04 | Primary DOS with 16 bit FAT (<= 32MB)
+   |          | 0x06 | Primary 'big' DOS (> 32MB)
+   |          | 0x0B | DOS or Windows 95 with 32 bit FAT
+   |          | 0x0C | DOS or Windows 95 with 32 bit FAT, LBA
+   | ntfs     | 0x07 | OS/2 HPFS, NTFS, QNX or Advanced UNIX
+   | hpfs     | 0x07 | OS/2 HPFS, NTFS, QNX or Advanced UNIX
+   | ext2     | 0x83 | Linux ext2 filesystem
+   | lswap    | 0x82 | Linux swap
+   | bsddl    | 0xA5 | FreeBSD/NetBSD/386BSD
+   | s86dl    | 0x82 | Solaris/x86 disklabel
+   | minix    | 0x80 | Minix V1
+   |          | 0x81 | Minix V2
+   | reiserfs | 0x83 | ReiserFS filesystem
+   | hmlvm    | 0xFE | Linux LVM physical volumes
+   | qnx4     | 0x4F | QNX 4.x
+   | beos     | 0xEB | BeOS fs
+   | xfs      | 0x83 | SGI XFS filesystem
+   | btrfs    | 0x83 | BtrFS
+   | LVM2     | 0x8E | LVM2
 
 
 ## Guessing modules
@@ -106,12 +106,12 @@ Here is a sample `gpart -v` run on my first IDE hard disk
        hex:  80 01 01 00 06 FE 3F 3F 3F 00 00 00 01 B0 0F 00
 
 >   `size`: the size of the partition in megabytes, number of
->   sectors and the sector range.  
+>   sectors and the sector range.
 >   `chs`: the partition table chs range (`d`) and the real one
 >   (`r`). If the number of cylinders is less than 1024, both
->   are identical.  
+>   are identical.
 >   `hex`: the hexadecimal representation of the partition entry
->   as found in the partition table.  
+>   as found in the partition table.
 
 ...
 
