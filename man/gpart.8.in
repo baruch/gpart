@@ -355,8 +355,9 @@ plain file and write this into sector 0 using
 .IP "-w module name,weight"
 Put the given module at the head of the module chain
 and assign a new weight to that module. All modules
-are given an initial weight of 1.0. Again no spaces
-are allowed.
+are given an initial weight of 1.0. A weight of 0
+deactivates the filesystem recognition module. Again
+no spaces are allowed.
 
 
 .PP
@@ -423,6 +424,23 @@ To list the available modules and their weights use
 the
 .I -L
 option.
+
+\-\ Suppose the hard disk contains a lot of virtual machines
+and the filesystems inside the VMs isn't used outside. Thereby
+deactivating the guessing of those filesystems reduces the
+noise and false positives during the scan process.
+
+Set the module weight to 0 to deactivate guessing it.
+
+For example: The hard disk is formatted with XFS and EXT3
+filesystems only and there are a lot of Windows VMs on these
+filesystems. Thereby deactivating of FAT and NTFS guesses
+reduce the noise during the scan process and produces a more
+accurate guess.
+
+.RS
+gpart \-w fat,0 \-w ntfs,0  /dev/hdb
+.RE
 
 \-\ After having checked the output of
 .B gpart
