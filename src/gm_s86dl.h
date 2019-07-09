@@ -17,6 +17,7 @@
 #ifndef _GM_S86DL_H
 #define _GM_S86DL_H
 
+#include <linux/types.h>
 
 #define SOLARIS_X86_NUMSLICE		8
 #define SOLARIS_X86_VTOC_SANE		(0x600DDEEEUL)
@@ -38,10 +39,10 @@
 
 
 struct solaris_x86_slice {
-	ushort	s_tag;			/* ID tag of partition */
-	ushort	s_flag;			/* permision flags */
-	daddr_t s_start;		/* start sector no of partition */
-	long	s_size;			/* # of blocks in partition */
+	ushort	s_tag;				/* ID tag of partition */
+	ushort	s_flag;				/* permision flags */
+	__kernel_daddr_t s_start;	/* start sector no of partition */
+	long	s_size;				/* # of blocks in partition */
 };
 
 struct solaris_x86_vtoc {
