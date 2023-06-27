@@ -27,7 +27,7 @@
  * offsets.
  */
 
-typedef loff_t off64_t;
+typedef off_t off64_t;
 typedef off64_t s64_t;
 
 off64_t l64seek(int fd, off64_t offset, int whence);
