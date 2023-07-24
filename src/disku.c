@@ -62,9 +62,10 @@ static void os_disk_geometry(disk_desc *d, struct disk_geom *g)
 	if (ioctl(d->d_fd, BLKGETSIZE, &nsects) == -1)
 		pr(FATAL, EM_IOCTLFAILED, "BLKGETSIZE", strerror(errno));
 	else {
-		if (hg.heads && hg.sectors)
+		if (hg.heads && hg.sectors) {
 			g->d_c = nsects / (hg.heads * hg.sectors);
-		else
+			g->d_nsecs = nsects;
+		} else
 			geometry_from_num_sectors(g, nsects);
 	}
 #endif
